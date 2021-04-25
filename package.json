@@ -62,7 +62,6 @@
     "*.{js,jsx,vue,ts,tsx}": [
       "eslint --ext .js,.vue ./ --fix",
       "git add"
-    ],
-    "*.{js,vue}": "eslint --cache --fix"
+    ]
   }
 }
