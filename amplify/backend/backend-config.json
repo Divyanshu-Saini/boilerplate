@@ -1,0 +1,33 @@
+{
+  "auth": {
+    "fbvacore1be543df": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  },
+  "storage": {
+    "devfbvacorestorage": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "api": {
+    "fbvacore": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authfbvacore1be543df"
+            }
+          },
+          "additionalAuthenticationProviders": []
+        }
+      }
+    }
+  }
+}

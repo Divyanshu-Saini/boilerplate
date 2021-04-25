@@ -1,0 +1,7 @@
+type Channel @model {
+  id: ID!
+  title: String!
+  isEnabled: Boolean!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
