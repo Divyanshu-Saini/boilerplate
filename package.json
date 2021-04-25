@@ -7,7 +7,8 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./ --fix",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -31,6 +32,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.7.0",
     "eslint-webpack-plugin": "^2.4.0",
+    "husky": "^6.0.0",
     "lint-staged": "^10.5.4"
   },
   "browserslist": [
@@ -57,6 +59,7 @@
     "*.{js,jsx,vue,ts,tsx}": [
       "eslint --ext .js,.vue ./ --fix",
       "git add"
-    ]
+    ],
+    "*.{js,vue}": "eslint --cache --fix"
   }
 }
