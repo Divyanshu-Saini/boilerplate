@@ -1,7 +1,7 @@
 export default function() {
   return {
     user: {
-      isSignedIn: false,
+      isSignedIn: true,
       lastSignedInState: 'Not signed in',
       id: '',
       firstName: '',

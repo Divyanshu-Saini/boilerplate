@@ -6,10 +6,10 @@
   "author": "NDS Global Cloud Solutions Team",
   "private": true,
   "scripts": {
-    "start:spa":"npm run lint && quasar dev",
-    "start:electron":"npm run lint && quasar dev -m electron",
-    "build:spa":"quasar build",
-    "build:electron":"quasar build -m electron",
+    "start:spa": "npm run lint && quasar dev",
+    "start:electron": "npm run lint && quasar dev -m electron",
+    "build:spa": "quasar build",
+    "build:electron": "quasar build -m electron",
     "lint": "eslint --ext .js,.vue ./ --fix",
     "test": "echo \"No test specified\" && exit 0",
     "prepare": "husky install"
@@ -21,8 +21,11 @@
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "lodash": "^4.17.21",
+    "material-design-icons": "^3.0.1",
     "moment": "^2.29.1",
+    "nds-aws-lex-web-ui": "^1.0.1",
     "quasar": "^1.0.0",
+    "roboto-fontface": "^0.10.0",
     "vue-i18n": "^8.0.0",
     "vuetify": "^0.17.7"
   },
