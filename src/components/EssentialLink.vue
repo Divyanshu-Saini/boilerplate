@@ -1,12 +1,12 @@
 <template>
-  <q-item clickable tag="a" target="_blank" :href="link">
+  <q-item clickable v-ripple :to="link">
     <q-item-section v-if="icon" avatar>
-      <q-icon :name="icon" />
+      <q-avatar :color="color" text-color="white" :icon="icon" />
     </q-item-section>
 
     <q-item-section>
       <q-item-label>{{ title }}</q-item-label>
-      <q-item-label caption>
+      <q-item-label caption lines="2">
         {{ caption }}
       </q-item-label>
     </q-item-section>
@@ -35,6 +35,11 @@ export default {
     icon: {
       type: String,
       default: ''
+    },
+
+    color: {
+      type: String,
+      default: 'primary'
     }
   }
 };

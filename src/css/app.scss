@@ -1,1 +1,21 @@
 // app global css in SCSS form
+@font-face {
+    font-family: 'Muli';
+    src: url(./fonts/woff2/Muli.woff2) format('woff2'), /* Modern Browsers */
+        url(./fonts/woff/Muli.woff) format('woff'), /* somewhat Modern Browsers */
+        url(./fonts/ttf/Muli.ttf)  format('truetype'); /* Safari, Android, iOS */
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro';
+    src: url(./fonts/woff2/MyriadPro-Regular.woff2) format('woff2'), /* Modern Browsers */
+        url(./fonts/woff/MyriadPro-Regular.woff) format('woff'), /* somewhat Modern Browsers */
+        url(./fonts/ttf/MYRIADPRO-REGULAR.ttf)  format('truetype'); /* Safari, Android, iOS */
+    font-display: swap;
+}
+
+.fbvafont {
+    font-family: Muli, Myriad Pro, Arial;
+}
+

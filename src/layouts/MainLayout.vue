@@ -3,21 +3,44 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="leftDrawerOpen = !leftDrawerOpen" />
+        <q-avatar size="32px">
+          <img :src="this.$store.state.global.bot.avatarUrl" />
+        </q-avatar>
+        <q-toolbar-title v-html="this.$store.state.global.bot.name"> </q-toolbar-title>
 
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <q-chip clickable>
+          <q-avatar size="24px">
+            <img :src="this.$store.state.global.user.photoUrl" />
+          </q-avatar>
+          <span v-html="this.$store.state.global.user.name"></span>
+        </q-chip>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
-      <q-list>
-        <q-item-label header class="text-grey-8">
-          Essential Links
-        </q-item-label>
-        <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white-1">
+      <q-scroll-area style="height: calc(100% - 164px); margin-top: 164px; border-right: 1px solid #ddd;">
+        <q-list>
+          <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
+        </q-list>
+      </q-scroll-area>
+      <q-list class="absolute-top" style="border-bottom: 1px solid #ddd;">
+        <q-item v-ripple style="padding: 0 0 20px 0;border-right: 1px solid #ddd;">
+          <q-img contain position="0 0" height="60px" src="~assets/images/wv_top_small.png"> </q-img>
+        </q-item>
+        <q-item v-ripple style="padding: 0 0 20px 0;border-right: 1px solid #ddd;">
+          <q-item-section side>
+            <q-avatar rounded size="48px">
+              <img :src="this.$store.state.global.bot.avatarUrl" />
+            </q-avatar>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label v-html="this.$store.state.global.bot.name"></q-item-label>
+            <q-item-label overline>Your Digital Buddy!</q-item-label>
+            <q-item-label caption lines="1">
+              <q-btn key="Personalize" align="left" color="warning" outline no-caps size="sm" label="Personalize" />
+            </q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -32,46 +55,25 @@ import EssentialLink from 'components/EssentialLink.vue';
 
 const linksData = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'Chat',
+    caption: 'Get assistance on your routine tasks',
+    icon: 'question_answer',
+    link: 'chat',
+    color: 'primary'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: 'Notifications',
+    caption: 'Take a look at and act on your notifications',
+    icon: 'notifications',
+    link: 'notifications',
+    color: 'accent'
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+    title: 'Settings',
+    caption: 'Personalize my behaviour',
+    icon: 'settings',
+    link: 'settings',
+    color: 'secondary'
   }
 ];
 
