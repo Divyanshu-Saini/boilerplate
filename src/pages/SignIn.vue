@@ -17,14 +17,28 @@
         further...
       </div>
 
-      <q-btn class="q-mt-xl" color="white" text-color="blue" unelevated to="/" label="Sign In" no-caps />
+      <q-btn
+        class="q-mt-xl"
+        color="white"
+        text-color="blue"
+        unelevated
+        to="/"
+        label="Sign In"
+        no-caps
+        @click="signIn"
+      />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'SignIn'
+  name: 'SignIn',
+  methods: {
+    signIn: () => {
+      console.log('SignIn clicked');
+    }
+  }
 };
 </script>
 

@@ -15,7 +15,6 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@advanced-rest-client/electron-oauth2": "^5.0.4",
     "@quasar/extras": "^1.0.0",
     "aws-amplify": "^3.3.27",
     "aws-sdk": "^2.892.0",

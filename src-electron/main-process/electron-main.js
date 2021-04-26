@@ -1,6 +1,4 @@
 import { app, BrowserWindow, nativeTheme } from 'electron';
-import { Oauth2Identity } from '@advanced-rest-client/electron-oauth2';
-Oauth2Identity.listen();
 
 try {
   if (process.platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
