@@ -6,6 +6,7 @@
   "author": "NDS Global Cloud Solutions Team",
   "private": true,
   "scripts": {
+    "serve":"quasar serve dist/spa",
     "start:spa": "npm run lint && quasar dev",
     "start:electron": "npm run lint && quasar dev -m electron",
     "build:spa": "quasar build",
