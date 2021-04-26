@@ -7,3 +7,5 @@
 
 .eslintrc.js
 src/models
+
+src\models
