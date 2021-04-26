@@ -25,7 +25,7 @@
       </q-scroll-area>
       <q-list class="absolute-top" style="border-bottom: 1px solid #ddd;">
         <q-item v-ripple style="padding: 0 0 20px 0;border-right: 1px solid #ddd;">
-          <q-img contain position="0 0" height="60px" src="~assets/images/wv_top_small.png"> </q-img>
+          <q-img contain position="0 0" height="60px" src="images/wv_top_small.png"> </q-img>
         </q-item>
         <q-item v-ripple style="padding: 0 0 20px 0;border-right: 1px solid #ddd;">
           <q-item-section side>
@@ -85,6 +85,10 @@ export default {
       leftDrawerOpen: false,
       essentialLinks: linksData
     };
+  },
+  created() {
+    console.log(this.$store.state.global.bot.avatarUrl);
+    console.log(this.$store.state.global.user.photoUrl);
   }
 };
 </script>

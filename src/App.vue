@@ -18,10 +18,12 @@ export default {
   name: 'App',
   async created() {
     console.info('Auth config :', config);
-    const accessTokenObj = await this.$q.electron.ipcRenderer
-      .invoke('oauth2-launchwebflow', config)
-      .catch(error => console.error('Error invoking auth', error));
-    console.info('AccessObject :', accessTokenObj);
+    if (this.$q.platform.is.electron) {
+      const accessTokenObj = await this.$q.electron.ipcRenderer
+        .invoke('oauth2-launchwebflow', config)
+        .catch(error => console.error('Error invoking auth', error));
+      console.info('AccessObject :', accessTokenObj);
+    }
   }
 };
 </script>
