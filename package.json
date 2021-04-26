@@ -6,11 +6,16 @@
   "author": "Divyanshu Saini <bat2268@gmail.com>",
   "private": true,
   "scripts": {
+    "start:dev":"quasar dev",
+    "start:electron":"quasar dev -m electron",
+    "build:spa":"quasar build",
+    "build:electron":"quasar build -m electron",
     "lint": "eslint --ext .js,.vue ./ --fix",
     "test": "echo \"No test specified\" && exit 0",
     "prepare": "husky install"
   },
   "dependencies": {
+    "@advanced-rest-client/electron-oauth2": "^5.0.4",
     "@quasar/extras": "^1.0.0",
     "aws-amplify": "^3.3.27",
     "aws-sdk": "^2.892.0",
