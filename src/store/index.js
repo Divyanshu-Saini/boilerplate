@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { Store as LexWebUiStore } from 'nds-aws-lex-web-ui';
 import global from './module-global';
 import createPersistedState from 'vuex-persistedstate';
 
@@ -21,15 +22,17 @@ const globalState = createPersistedState({
  */
 
 export default function(/* { ssrContext } */) {
-  const Store = new Vuex.Store({
-    modules: {
-      global
-    },
-    plugins: [globalState],
-    // enable strict mode (adds overhead!)
-    // for dev mode only
-    strict: process.env.DEBUGGING
-  });
+  const Store = new Vuex.Store(
+    Object.assign({}, LexWebUiStore, {
+      modules: {
+        global
+      },
+      plugins: [globalState],
+      // enable strict mode (adds overhead!)
+      // for dev mode only
+      strict: process.env.DEBUGGING
+    })
+  );
 
   return Store;
 }
