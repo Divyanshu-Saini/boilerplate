@@ -10,7 +10,7 @@ import dev from '../fbva-aws-exports-dev';
 export default (/* { app, router, Vue ... } */) => {
   // something to do
   let awsIos, awsAndroid, awsmobile, awsDesktop, awsWeb;
-  if (process.env.NODE_ENV == 'prod') {
+  if (process.env.NODE_ENV == 'production') {
     awsIos = prod.awsIos;
     awsAndroid = prod.awsAndroid;
     awsmobile = prod.awsmobile;
@@ -34,7 +34,7 @@ export default (/* { app, router, Vue ... } */) => {
     if (Platform.is.ios) Amplify.configure(awsIos);
     else if (Platform.is.android) Amplify.configure(awsAndroid);
     else Amplify.configure(awsmobile);
-  } else if (Platform.is.electron || Platform.is.win) {
+  } else if (Platform.is.electron && Platform.is.win) {
     Amplify.configure(awsDesktop);
   } else {
     Amplify.configure(awsWeb);

@@ -52,6 +52,7 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue';
+import { Auth, Hub } from 'aws-amplify';
 
 const linksData = [
   {
@@ -89,6 +90,76 @@ export default {
   created() {
     console.log(this.$store.state.global.bot.avatarUrl);
     console.log(this.$store.state.global.user.photoUrl);
+    Hub.listen('auth', this.handleAuthEvents);
+  },
+  methods: {
+    handleAuthEvents(data) {
+      switch (data.payload.event) {
+        case 'signIn':
+          this.fillUserInfo(data.payload.event);
+          //this.subscribeToNotifications();
+          console.log('user signed in');
+          break;
+        case 'signOut':
+        case 'oAuthSignOut':
+          //this.unsubscribeToNotifications();
+          this.clearUserInfo(data.payload.event);
+          console.log('user signed out');
+          break;
+        case 'signIn_failure':
+          //this.unsubscribeToNotifications();
+          this.clearUserInfo(data.payload.event);
+          console.log('user sign in failed');
+          break;
+        case 'tokenRefresh':
+          this.fillUserInfo(data.payload.event);
+          //this.subscribeToNotifications();
+          console.log('token refresh succeeded');
+          break;
+        case 'tokenRefresh_failure':
+          //this.unsubscribeToNotifications();
+          this.clearUserInfo(data.payload.event);
+          console.log('token refresh failed');
+          break;
+        case 'configured':
+          console.log('the Auth module is configured');
+          break;
+      }
+    },
+    fillUserInfo(eventType) {
+      Auth.currentAuthenticatedUser({ bypassCache: true })
+        .then(userInfo => {
+          this.$store.commit('global/setUser', {
+            isSignedIn: true,
+            lastSignedInState: eventType,
+            id: userInfo.username,
+            firstName: userInfo.attributes['given_name'],
+            lastName: userInfo.attributes['family_name'],
+            name: userInfo.attributes['name'],
+            email: userInfo.attributes['email'],
+            upn: JSON.parse(userInfo.attributes['identities'])[0].userId,
+            chatUserId: userInfo.attributes['custom:ldsobjectGUID'],
+            photoUrl: '/images/person_48.png'
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    clearUserInfo(eventType) {
+      this.$store.commit('global/setUser', {
+        isSignedIn: false,
+        lastSignedInState: eventType,
+        id: '',
+        firstName: '',
+        lastName: '',
+        name: 'Not signed in',
+        email: '',
+        upn: '',
+        chatUserId: '',
+        photoUrl: '/images/person_48.png'
+      });
+    }
   }
 };
 </script>

@@ -32,11 +32,13 @@
 </template>
 
 <script>
+import { Auth } from 'aws-amplify';
+
 export default {
   name: 'SignIn',
   methods: {
     signIn: () => {
-      console.log('SignIn clicked');
+      Auth.federatedSignIn();
     }
   }
 };

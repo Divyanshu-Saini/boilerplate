@@ -9,9 +9,9 @@
     "framework": "none",
     "config": {
       "SourceDir": "src",
-      "DistributionDir": "dist/spa",
-      "BuildCommand": "npm.cmd run-script build",
-      "StartCommand": "npm.cmd run-script start"
+      "DistributionDir": "dist",
+      "BuildCommand": "quasar build",
+      "StartCommand": "npm run lint && quasar dev"
     }
   }
 }

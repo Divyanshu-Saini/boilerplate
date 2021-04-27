@@ -1,0 +1,12 @@
+{
+  "name": "fbva-core",
+  "version": "0.0.1",
+  "description": "Client for TCPL Lex bot",
+  "author": "NDS Global Cloud Solutions Team",
+  "private": true,
+  "dependencies": {
+    "@capacitor/android": "^2.4.7",
+    "@capacitor/cli": "^2.0.0",
+    "@capacitor/core": "^2.0.0"
+  }
+}

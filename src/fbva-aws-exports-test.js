@@ -9,7 +9,7 @@ const awsmobile = {
   aws_user_pools_web_client_id: '491cr5u2lvh1j2c1gpk67cmuuq',
   oauth: {
     domain: 'fbvacore-dev.auth.us-east-1.amazoncognito.com',
-    scope: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
+    scope: ['email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
     redirectSignIn: 'http://localhost:8080/',
     redirectSignOut: 'http://localhost:8080/',
     responseType: 'code'
@@ -30,9 +30,9 @@ const awsIos = {
   aws_user_pools_web_client_id: '491cr5u2lvh1j2c1gpk67cmuuq',
   oauth: {
     domain: 'fbvacore-dev.auth.us-east-1.amazoncognito.com',
-    scope: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
-    redirectSignIn: 'http://localhost:8080/',
-    redirectSignOut: 'http://localhost:8080/',
+    scope: ['email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
+    redirectSignIn: 'http://localhost:8080/,https://.d17tn2tjvjpqrl.amplifyapp.com/',
+    redirectSignOut: 'http://localhost:8080/,https://.d17tn2tjvjpqrl.amplifyapp.com/',
     responseType: 'code'
   },
   federationTarget: 'COGNITO_USER_POOLS',
@@ -51,7 +51,7 @@ const awsAndroid = {
   aws_user_pools_web_client_id: '491cr5u2lvh1j2c1gpk67cmuuq',
   oauth: {
     domain: 'fbvacore-dev.auth.us-east-1.amazoncognito.com',
-    scope: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
+    scope: ['email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
     redirectSignIn: 'http://localhost:8080/',
     redirectSignOut: 'http://localhost:8080/',
     responseType: 'code'
@@ -72,7 +72,7 @@ const awsWeb = {
   aws_user_pools_web_client_id: '491cr5u2lvh1j2c1gpk67cmuuq',
   oauth: {
     domain: 'fbvacore-dev.auth.us-east-1.amazoncognito.com',
-    scope: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
+    scope: ['email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
     redirectSignIn: 'http://localhost:8080/',
     redirectSignOut: 'http://localhost:8080/',
     responseType: 'code'
@@ -93,7 +93,7 @@ const awsDesktop = {
   aws_user_pools_web_client_id: '491cr5u2lvh1j2c1gpk67cmuuq',
   oauth: {
     domain: 'fbvacore-dev.auth.us-east-1.amazoncognito.com',
-    scope: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
+    scope: ['email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
     redirectSignIn: 'http://localhost:8080/',
     redirectSignOut: 'http://localhost:8080/',
     responseType: 'code'
