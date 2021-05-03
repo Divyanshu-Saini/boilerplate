@@ -1,12 +1,14 @@
 <template>
   <q-page>
-    <lex-web-ui v-on:updateLexState="onUpdateLexState"></lex-web-ui>
+    <lex-web-ui v-on:updateLexState="onUpdateLexState" v-if="initialiseLex"></lex-web-ui>
   </q-page>
 </template>
 
 <script>
 import Vue from 'vue';
 import Vuetify from 'vuetify';
+import { Auth } from 'aws-amplify';
+import { CognitoIdentityCredentials } from 'aws-sdk/global';
 import 'vuetify/dist/vuetify.min.css';
 import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import 'material-design-icons/iconfont/material-icons.css';
@@ -16,6 +18,11 @@ Vue.use(Vuetify);
 
 export default {
   name: 'Chat',
+  data() {
+    return {
+      initialiseLex: false
+    };
+  },
   methods: {
     onUpdateLexState(lState) {
       console.log('Lex State :', lState);
@@ -154,8 +161,25 @@ export default {
       });
     }
   },
-  created() {
-    this.initialiseBot(this.$store.state.global.user.chatUserId);
+  async created() {
+    if (!this.$_.isEmpty(this.$store.state.global.user.chatUserId)) {
+      this.initialiseBot(this.$store.state.global.user.chatUserId);
+      this.$data.initialiseLex = true;
+    }
+    const credentials = await Auth.currentUserCredentials();
+    const session = await Auth.currentSession();
+    const poolId = 'us-east-1:cd7eef00-d2ae-4ed3-b68b-e19d3a5e1214';
+    const region = 'us-east-1';
+    const awscredentials = new CognitoIdentityCredentials(
+      {
+        IdentityPoolId: poolId,
+        Logins: {
+          'cognito-idp.us-east-1.amazonaws.com/us-east-1:cd7eef00-d2ae-4ed3-b68b-e19d3a5e1214': session.idToken.jwtToken
+        }
+      },
+      { region }
+    );
+    console.info('Credential :', credentials, 'Session :', session.idToken.jwtToken, 'aws :', awscredentials);
   }
 };
 </script>
