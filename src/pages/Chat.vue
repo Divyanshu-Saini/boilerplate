@@ -1,20 +1,96 @@
 <template>
   <q-page>
     <lex-web-ui v-on:updateLexState="onUpdateLexState" v-if="initialiseLex"></lex-web-ui>
+    <q-banner inline-actions class="text-white bg-red" v-if="!initialiseLex">
+      You donot have permission to use chat feature. Check with your admin!
+    </q-banner>
   </q-page>
 </template>
 
 <script>
 import Vue from 'vue';
+import { LocalStorage } from 'quasar';
 import Vuetify from 'vuetify';
-import { Auth } from 'aws-amplify';
-import { CognitoIdentityCredentials } from 'aws-sdk/global';
+import { Config as AWSConfig, CognitoIdentityCredentials } from 'aws-sdk/global';
+import Polly from 'aws-sdk/clients/polly';
+import LexRuntimeV2 from 'aws-sdk/clients/lexruntimev2';
+import { Plugin as LexWebUi } from 'nds-aws-lex-web-ui';
 import 'vuetify/dist/vuetify.min.css';
 import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import 'material-design-icons/iconfont/material-icons.css';
 import 'nds-aws-lex-web-ui/dist/lex-web-ui.css';
 
 Vue.use(Vuetify);
+const poolId = 'us-east-1:b3dfe5d1-9bfc-419d-95c9-116e7aced9f0';
+const region = 'us-east-1';
+const poolName = 'cognito-idp.us-east-1.amazonaws.com/us-east-1_tGdnURSRx';
+const session = LocalStorage.getItem('botSession');
+console.info('Chat Auth Session :', session);
+
+const credentials = new CognitoIdentityCredentials(
+  {
+    IdentityPoolId: poolId,
+    Logins: {
+      [poolName]: session.idToken.jwtToken
+    }
+  },
+  { region }
+);
+const awsConfig = new AWSConfig({ region, credentials, apiVersion: 'latest' });
+const lexRuntimeV2Client = new LexRuntimeV2(awsConfig);
+const pollyClient = new Polly(awsConfig);
+
+const config = {
+  cognito: { poolId },
+  lex: {
+    botName: 'FBVA_Dev',
+    initialUtterance: '',
+    reInitSessionAttributesOnRestart: false,
+    retryOnLexPostTextTimeout: 'true',
+    retryCountPostTextTimeout: '2',
+    v2BotId: 'SDODKAAQQJ',
+    v2BotAliasId: 'EQJNACDMHP',
+    v2BotLocaleId: 'en_US',
+    initialText: '',
+    initialSpeechInstruction: ''
+  },
+  ui: {
+    showHeader: false,
+    toolbarTitle: 'Chat with Eva',
+    toolbarLogo: '',
+    positiveFeedbackIntent: 'Thumbs up',
+    negativeFeedbackIntent: 'Thumbs down',
+    helpIntent: 'Help',
+    enableLogin: false,
+    forceLogin: false,
+    AllowSuperDangerousHTMLInMessage: true,
+    shouldDisplayResponseCardTitle: false,
+    saveHistory: true,
+    minButtonContent: 'X',
+    hideInputFieldsForButtonResponse: false,
+    pushInitialTextOnRestart: false,
+    directFocusToBotInput: false,
+    showDialogStateIcon: false,
+    backButton: false,
+    messageMenu: true,
+    hideButtonMessageBubble: false,
+    showMessageDate: true
+  },
+  polly: {
+    voiceId: 'Salli'
+  },
+  recorder: {
+    enable: false,
+    preset: 'speech_recognition'
+  }
+};
+
+Vue.use(LexWebUi, {
+  config,
+  awsConfig,
+  lexRuntimeV2Client,
+  pollyClient
+});
 
 export default {
   name: 'Chat',
@@ -76,7 +152,7 @@ export default {
           res.dialogState = res.sessionState.intent.state;
           const finalMessages = [];
           if (res.messages && res.messages.length > 0) {
-            res.messages.forEach(mes => {
+            res.messages.forEach((mes) => {
               if (mes.contentType === 'ImageResponseCard') {
                 res.responseCard = {};
                 res.responseCard.version = '1';
@@ -166,20 +242,6 @@ export default {
       this.initialiseBot(this.$store.state.global.user.chatUserId);
       this.$data.initialiseLex = true;
     }
-    const credentials = await Auth.currentUserCredentials();
-    const session = await Auth.currentSession();
-    const poolId = 'us-east-1:cd7eef00-d2ae-4ed3-b68b-e19d3a5e1214';
-    const region = 'us-east-1';
-    const awscredentials = new CognitoIdentityCredentials(
-      {
-        IdentityPoolId: poolId,
-        Logins: {
-          'cognito-idp.us-east-1.amazonaws.com/us-east-1:cd7eef00-d2ae-4ed3-b68b-e19d3a5e1214': session.idToken.jwtToken
-        }
-      },
-      { region }
-    );
-    console.info('Credential :', credentials, 'Session :', session.idToken.jwtToken, 'aws :', awscredentials);
   }
 };
 </script>

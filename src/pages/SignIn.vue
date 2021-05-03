@@ -8,11 +8,9 @@
         For Better Virtual Assistant
       </q-chip>
 
-      <div class="text-h5" style="opacity:.9">
-        Sign in required
-      </div>
+      <div class="text-h5" style="opacity: 0.9">Sign in required</div>
 
-      <div class="text-h6" style="opacity:.9">
+      <div class="text-h6" style="opacity: 0.9">
         Either you haven't signed in or your session may have expired. I will need you to sign in before we can proceed
         further...
       </div>

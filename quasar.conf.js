@@ -8,7 +8,7 @@
 /* eslint-env node */
 const ESLintPlugin = require('eslint-webpack-plugin');
 
-module.exports = function(/* ctx */) {
+module.exports = function (/* ctx */) {
   return {
     // https://v1.quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -19,7 +19,7 @@ module.exports = function(/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v1.quasar.dev/quasar-cli/boot-files
-    boot: ['i18n', 'axios', 'amplify', 'lodash', 'moment', 'lex-web-ui'],
+    boot: ['i18n', 'axios', 'amplify', 'lodash', 'moment'],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ['app.scss'],
@@ -91,7 +91,7 @@ module.exports = function(/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: ['LocalStorage', 'SessionStorage']
     },
 
     // animations: 'all', // --- includes all animations

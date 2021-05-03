@@ -18,16 +18,16 @@
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-white-1">
-      <q-scroll-area style="height: calc(100% - 164px); margin-top: 164px; border-right: 1px solid #ddd;">
+      <q-scroll-area style="height: calc(100% - 164px); margin-top: 164px; border-right: 1px solid #ddd">
         <q-list>
           <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
         </q-list>
       </q-scroll-area>
-      <q-list class="absolute-top" style="border-bottom: 1px solid #ddd;">
-        <q-item v-ripple style="padding: 0 0 20px 0;border-right: 1px solid #ddd;">
+      <q-list class="absolute-top" style="border-bottom: 1px solid #ddd">
+        <q-item v-ripple style="padding: 0 0 20px 0; border-right: 1px solid #ddd">
           <q-img contain position="0 0" height="60px" src="images/wv_top_small.png"> </q-img>
         </q-item>
-        <q-item v-ripple style="padding: 0 0 20px 0;border-right: 1px solid #ddd;">
+        <q-item v-ripple style="padding: 0 0 20px 0; border-right: 1px solid #ddd">
           <q-item-section side>
             <q-avatar rounded size="48px">
               <img :src="this.$store.state.global.bot.avatarUrl" />
@@ -128,7 +128,7 @@ export default {
     },
     fillUserInfo(eventType) {
       Auth.currentAuthenticatedUser({ bypassCache: true })
-        .then(userInfo => {
+        .then((userInfo) => {
           this.$store.commit('global/setUser', {
             isSignedIn: true,
             lastSignedInState: eventType,
@@ -142,7 +142,7 @@ export default {
             photoUrl: '/images/person_48.png'
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
