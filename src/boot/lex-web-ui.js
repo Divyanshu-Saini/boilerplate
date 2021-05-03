@@ -10,15 +10,15 @@ import { Plugin as LexWebUi } from 'nds-aws-lex-web-ui';
 // const poolId = 'us-east-1:cd7eef00-d2ae-4ed3-b68b-e19d3a5e1214';
 const poolId = 'us-east-1:b3dfe5d1-9bfc-419d-95c9-116e7aced9f0';
 const region = 'us-east-1';
-// const credentials = new CognitoIdentityCredentials(
-//   {
-//     IdentityPoolId: poolId,
-//     Logins: {
-//       'cognito-idp.us-east-1.amazonaws.com/us-east-1:b3dfe5d1-9bfc-419d-95c9-116e7aced9f0':
-//     }
-//   },
-//   { region }
-// );
+const credentials = new CognitoIdentityCredentials(
+  {
+    IdentityPoolId: poolId,
+    Logins: {
+      'cognito-idp.us-east-1.amazonaws.com/us-east-1_tGdnURSRx': idTokenJwt
+    }
+  },
+  { region }
+);
 const awsConfig = new AWSConfig({ region, credentials, apiVersion: 'latest' });
 
 // const lexRuntimeClient = new AWS.LexRuntimeV2(awsConfig);
