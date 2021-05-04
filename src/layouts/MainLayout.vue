@@ -128,7 +128,7 @@ export default {
     },
     fillUserInfo(eventType) {
       Auth.currentAuthenticatedUser({ bypassCache: true })
-        .then(userInfo => {
+        .then((userInfo) => {
           this.$store.commit('global/setUser', {
             isSignedIn: true,
             lastSignedInState: eventType,
@@ -142,7 +142,7 @@ export default {
             photoUrl: '/images/person_48.png'
           });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
