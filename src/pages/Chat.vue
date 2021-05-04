@@ -1,6 +1,14 @@
 <template>
   <q-page>
-    <lex-web-ui v-on:updateLexState="onUpdateLexState" v-if="initialiseLex"></lex-web-ui>
+    <div class="desk electron" v-if="$q.platform.is.electron || $q.platform.is.desktop">
+      <lex-web-ui v-on:updateLexState="onUpdateLexState" v-if="initialiseLex"></lex-web-ui>
+    </div>
+    <div class="m-ios" v-if="$q.platform.is.ios">
+      <lex-web-ui v-on:updateLexState="onUpdateLexState" v-if="initialiseLex"></lex-web-ui>
+    </div>
+    <div class="m-android" v-if="$q.platform.is.android">
+      <lex-web-ui v-on:updateLexState="onUpdateLexState" v-if="initialiseLex"></lex-web-ui>
+    </div>
     <q-banner inline-actions class="text-white bg-red" v-if="!initialiseLex">
       You donot have permission to use chat feature. Check with your admin!
     </q-banner>
@@ -152,7 +160,7 @@ export default {
           res.dialogState = res.sessionState.intent.state;
           const finalMessages = [];
           if (res.messages && res.messages.length > 0) {
-            res.messages.forEach(mes => {
+            res.messages.forEach((mes) => {
               if (mes.contentType === 'ImageResponseCard') {
                 res.responseCard = {};
                 res.responseCard.version = '1';
@@ -247,12 +255,36 @@ export default {
 </script>
 
 <style lang="scss">
-#lex-web {
-  .application--wrap {
-    min-height: 92vh !important;
+.electron,
+.desk {
+  #lex-web {
+    .application--wrap {
+      min-height: 92vh !important;
+    }
+    .message-list-container {
+      position: absolute;
+    }
   }
-  .message-list-container {
-    position: absolute;
+}
+.m-ios {
+  #lex-web {
+    .application--wrap {
+      min-height: 80vh !important;
+    }
+    .message-list-container {
+      position: absolute;
+    }
+  }
+}
+
+.m-android {
+  #lex-web {
+    .application--wrap {
+      min-height: 70vh !important;
+    }
+    .message-list-container {
+      position: absolute;
+    }
   }
 }
 </style>
