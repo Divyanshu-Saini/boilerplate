@@ -8,9 +8,9 @@
   "scripts": {
     "serve": "quasar serve dist/spa",
     "start:spa": "npm run lint && quasar dev",
-    "start:electron": "npm run lint && quasar dev -m electron android",
-    "start:android":" quasar dev -m capacitor -T ios",
-    "start:ios":" quasar dev -m capacitor -T ",
+    "start:electron": "npm run lint && quasar dev -m electron",
+    "start:android":" quasar dev -m capacitor -T android",
+    "start:ios":" quasar dev -m capacitor -T ios",
     "build:spa": "quasar build",
     "build:electron": "quasar build -m electron",
     "build:android":" quasar build -m capacitor -T android",
