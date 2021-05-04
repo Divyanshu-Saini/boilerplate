@@ -53,6 +53,7 @@ module.exports = {
 
   // add your custom rules here
   rules: {
+    'arrow-parens': ['error', 'always'],
     'prefer-promise-reject-errors': 'off',
 
     // allow debugger during development only
