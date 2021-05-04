@@ -152,7 +152,7 @@ export default {
           res.dialogState = res.sessionState.intent.state;
           const finalMessages = [];
           if (res.messages && res.messages.length > 0) {
-            res.messages.forEach((mes) => {
+            res.messages.forEach(mes => {
               if (mes.contentType === 'ImageResponseCard') {
                 res.responseCard = {};
                 res.responseCard.version = '1';
