@@ -29,9 +29,9 @@ import 'material-design-icons/iconfont/material-icons.css';
 import 'nds-aws-lex-web-ui/dist/lex-web-ui.css';
 
 Vue.use(Vuetify);
-const poolId = 'us-east-1:b3dfe5d1-9bfc-419d-95c9-116e7aced9f0';
-const region = 'us-east-1';
-const poolName = 'cognito-idp.us-east-1.amazonaws.com/us-east-1_tGdnURSRx';
+const region = process.env.REGION;
+const poolId = process.env.POOL_ID;
+const poolName = `cognito-idp.${region}.amazonaws.com/${process.env.USER_POOL_ID}`;
 const session = LocalStorage.getItem('botSession');
 console.info('Chat Auth Session :', session);
 
@@ -56,9 +56,9 @@ const config = {
     reInitSessionAttributesOnRestart: false,
     retryOnLexPostTextTimeout: 'true',
     retryCountPostTextTimeout: '2',
-    v2BotId: 'SDODKAAQQJ',
-    v2BotAliasId: 'EQJNACDMHP',
-    v2BotLocaleId: 'en_US',
+    v2BotId: process.env.V2_BOT_ID,
+    v2BotAliasId:  process.env.V2_BOT_ALIAS_ID,
+    v2BotLocaleId:  process.env.V2_BOT_LOCALE_ID,
     initialText: '',
     initialSpeechInstruction: ''
   },
@@ -109,10 +109,10 @@ export default {
   },
   methods: {
     onUpdateLexState(lState) {
-      console.log('Lex State :', lState);
+      console.info('Lex State :', lState);
     },
     initialiseBot(sessionId) {
-      console.log('Session Id :', sessionId);
+      console.info('Session Id :', sessionId);
       this.$store.commit('updateLexState', { sessionId });
       const params = {
         botAliasId: 'EQJNACDMHP',
@@ -122,7 +122,6 @@ export default {
       };
       this.$lexWebUi.lexRuntimeV2Client.getSession(params, (error, data) => {
         if (error) {
-          console.log('Error in getSession :', error);
           const putParams = {
             ...params,
             sessionState: {}
@@ -130,7 +129,6 @@ export default {
           this.setSession(putParams);
           this.getInitialResponse({ ...params, text: 'InitMsg' });
         }
-        console.log('Get Session data :', data);
         const putParams = {
           sessionState: {},
           ...params,
@@ -143,17 +141,18 @@ export default {
     setSession(params) {
       this.$lexWebUi.lexRuntimeV2Client.putSession(params, (error, data) => {
         if (error) {
-          console.log('Error in put session :', error);
+          console.error('Error in put session :', error);
+          return;
         }
-        console.log('New Session :', data);
+        console.info('New Session :', data);
       });
     },
     getInitialResponse(params) {
       this.$lexWebUi.lexRuntimeV2Client.recognizeText(params, (err, res) => {
         if (err) {
           console.error('Error in RecogniseText :', err);
+          return;
         }
-        console.log('Data from recogniseText :', res);
         if (res.sessionState) {
           // this is v2 response
           res.sessionAttributes = res.sessionState.sessionAttributes;
@@ -184,7 +183,6 @@ export default {
             const msg = `{"messages": ${JSON.stringify(finalMessages)} }`;
             res.message = msg;
           }
-          console.log('Res$$$$->', res);
           let response = res;
 
           if (response.sessionState || (response.message && response.message.includes('{"messages":'))) {
@@ -240,14 +238,13 @@ export default {
               alts
             });
           }
-          console.log('Process Response :', res);
         }
       });
     }
   },
   async created() {
-    if (!this.$_.isEmpty(this.$store.state.global.user.chatUserId)) {
-      this.initialiseBot(this.$store.state.global.user.chatUserId);
+    if (!this.$_.isEmpty(this.$store.state.global.user.identityId)) {
+      this.initialiseBot(this.$store.state.global.user.identityId);
       this.$data.initialiseLex = true;
     }
   }
@@ -255,24 +252,23 @@ export default {
 </script>
 
 <style lang="scss">
+  #lex-web {
+    .message-list-container {
+      position: absolute;
+    }
+  }
 .electron,
 .desk {
   #lex-web {
     .application--wrap {
       min-height: 92vh !important;
     }
-    .message-list-container {
-      position: absolute;
-    }
   }
 }
 .m-ios {
   #lex-web {
     .application--wrap {
-      min-height: 80vh !important;
-    }
-    .message-list-container {
-      position: absolute;
+      min-height: 88vh !important;
     }
   }
 }
@@ -280,10 +276,7 @@ export default {
 .m-android {
   #lex-web {
     .application--wrap {
-      min-height: 70vh !important;
-    }
-    .message-list-container {
-      position: absolute;
+      min-height: 88vh !important;
     }
   }
 }

@@ -128,7 +128,8 @@ export default {
     },
     fillUserInfo(eventType) {
       Auth.currentAuthenticatedUser({ bypassCache: true })
-        .then((userInfo) => {
+        .then(async (userInfo) => {
+          let credential = await Auth.currentCredentials();
           this.$store.commit('global/setUser', {
             isSignedIn: true,
             lastSignedInState: eventType,
@@ -139,8 +140,12 @@ export default {
             email: userInfo.attributes['email'],
             upn: JSON.parse(userInfo.attributes['identities'])[0].userId,
             chatUserId: userInfo.attributes['custom:ldsobjectGUID'],
-            photoUrl: '/images/person_48.png'
+            photoUrl: '/images/person_48.png',
+            identityId:credential.identityId
           });
+          const session = await Auth.currentSession();
+          this.$q.localStorage.set('botSession', session);
+          this.$router.push({name:'home'});
         })
         .catch((error) => {
           console.log(error);

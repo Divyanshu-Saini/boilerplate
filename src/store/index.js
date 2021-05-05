@@ -9,7 +9,7 @@ import createPersistedState from 'vuex-persistedstate';
 Vue.use(Vuex);
 
 const globalState = createPersistedState({
-  //  paths: ['global']
+   paths: ['global']
 });
 
 /*1
