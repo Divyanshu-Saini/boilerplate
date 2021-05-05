@@ -9,6 +9,7 @@ export default {
   name: 'App',
   async created() {
     // Verifying boot files initialisation
+    console.log('Process :', process.env.NAME, process.env.PORT, process.env.POOLID, process.env.obj);
     console.log('LexWebUi :', this.$lexWebUi);
     console.log('lodasd :', this.$_);
     console.log('Axios :', this.$axios);
