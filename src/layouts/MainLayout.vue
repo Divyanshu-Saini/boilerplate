@@ -18,7 +18,7 @@
               <q-item clickable v-if="!this.$store.state.global.user.isSignedIn" v-close-popup @click="signIn()">
                 <q-item-section>Sign In</q-item-section>
               </q-item>
-              <q-item clickable v-if="this.$store.state.global.user.isSignedIn" v-close-popup>
+              <q-item clickable v-if="this.$store.state.global.user.isSignedIn" v-close-popup @click="personalise()">
                 <q-item-section>Personalize</q-item-section>
               </q-item>
               <q-item clickable v-if="this.$store.state.global.user.isSignedIn" v-close-popup @click="signOut()">
@@ -50,7 +50,7 @@
             <q-item-label v-html="this.$store.state.global.bot.name"></q-item-label>
             <q-item-label overline>Your Digital Buddy!</q-item-label>
             <q-item-label caption lines="1">
-              <q-btn key="Personalize" align="left" color="warning" outline no-caps size="sm" label="Personalize" />
+              <q-btn key="Personalize" align="left" color="warning" outline no-caps size="sm" label="Personalize"  @click="personalise()"/>
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -113,6 +113,13 @@ export default {
   },
   methods: {
       ...mapActions("notification", ["setNotification"]),
+    personalise() {
+      const message = {
+        type: "human",
+        text: "Personalise",
+      };
+      this.$store.dispatch("postTextMessage", message);
+    },
     handleAuthEvents(data) {
       switch (data.payload.event) {
         case 'signIn':
