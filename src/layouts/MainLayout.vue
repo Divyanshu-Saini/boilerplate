@@ -107,6 +107,8 @@ export default {
       essentialLinks: linksData,
       notificationUSubscription: undefined,
       notificationCSubscription:undefined,
+      personaliseCSubscription:undefined,
+      personaliseUSubscription:undefined,
     };
   },
   created() {
@@ -114,6 +116,7 @@ export default {
     console.log(this.$store.state.global.user.photoUrl);
     this.setNotification();
     this.subscribeToNotifications();
+    this.subscribeToPersonalise();
     Hub.listen('auth', this.handleAuthEvents);
   },
   methods: {
@@ -248,6 +251,38 @@ export default {
           for(const t of target)
           if(t.id == this.$store.state.global.user.email){
              this.showNotif('top',value.data.onCreateNotifications.Message);
+          }
+        },
+        error: (error) => console.warn(error),
+      });
+    },
+    subscribeToPersonalise() {
+      this.personaliseUSubscription = API.graphql(
+        graphqlOperation(subscriptions.onUpdatePersonalize)
+      ).subscribe({
+        next: ({ provider, value }) => {
+          console.log({ provider, value });
+          if(value.data.onUpdatePersonalize.userId == this.$store.state.global.user.email){
+            let perObj= {
+                name:value.data.onUpdatePersonalize.botName,
+                avatarUrl:value.data.onUpdatePersonalize.avatarUrl
+             }
+             this.$store.commit('global/setBot', perObj);
+          }
+        },
+        error: (error) => console.warn(error),
+      });
+      this.personaliseCSubscription = API.graphql(
+        graphqlOperation(subscriptions.onCreatePersonalize)
+      ).subscribe({
+        next: ({ provider, value }) => {
+          console.log({ provider, value });
+          if(value.data.onCreatePersonalize.userId == this.$store.state.global.user.email){
+             let perObj= {
+                name:value.data.onCreatePersonalize.botName,
+                avatarUrl:value.data.onCreatePersonalize.avatarUrl
+             }
+             this.$store.commit('global/setBot', perObj);
           }
         },
         error: (error) => console.warn(error),
