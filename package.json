@@ -9,8 +9,12 @@
     "serve": "quasar serve dist/spa",
     "start:spa": "npm run lint && quasar dev",
     "start:electron": "npm run lint && quasar dev -m electron",
+    "start:android":" quasar dev -m capacitor -T android",
+    "start:ios":" quasar dev -m capacitor -T ios",
     "build:spa": "quasar build",
     "build:electron": "quasar build -m electron",
+    "build:android":" quasar build -m capacitor -T android",
+    "build:ios":" quasar build -m capacitor -T ios",
     "lint": "eslint --ext .js,.vue ./ --fix",
     "test": "echo \"No test specified\" && exit 0",
     "prepare": "husky install"

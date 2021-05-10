@@ -6,7 +6,7 @@ export default function() {
       id: '',
       firstName: '',
       lastName: '',
-      name: 'Not signed in',
+      name: '',
       email: '',
       upn: '',
       chatUserId: '',
