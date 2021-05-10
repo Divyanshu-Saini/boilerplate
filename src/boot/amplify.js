@@ -48,6 +48,7 @@ export default async ({ router, store }) => {
     try {
       const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true });
       const curSession = await Auth.currentSession();
+      const credential = await Auth.currentCredentials();
       if (curSession.isValid()) {
         console.log('Already signed in with valid token');
       } else {
@@ -66,7 +67,8 @@ export default async ({ router, store }) => {
         email: userInfo.attributes['email'],
         upn: JSON.parse(userInfo.attributes['identities'])[0].userId,
         chatUserId: userInfo.attributes['custom:ldsobjectGUID'],
-        photoUrl: '/images/person_48.png'
+        photoUrl: '/images/person_48.png',
+        identityId:credential.identityId,
       });
     } catch (error) {
       console.log('Failed to authenticate existing token or token not present locally');
@@ -80,7 +82,8 @@ export default async ({ router, store }) => {
         email: '',
         upn: '',
         chatUserId: '',
-        photoUrl: '/images/person_48.png'
+        photoUrl: '/images/person_48.png',
+        identityId:''
       });
     }
   }
