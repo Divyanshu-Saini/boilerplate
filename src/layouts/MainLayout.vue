@@ -184,18 +184,28 @@ export default {
           this.$store.commit('global/setUser', {
             isSignedIn: true,
             lastSignedInState: eventType,
-            id: userInfo.username,
-            firstName: userInfo.attributes['given_name'],
-            lastName: userInfo.attributes['family_name'],
-            name: userInfo.attributes['name'],
-            email: userInfo.attributes['email'],
-            upn: JSON.parse(userInfo.attributes['identities'])[0].userId,
-            chatUserId: userInfo.attributes['custom:ldsobjectGUID'],
+            id: userInfo.attributes == undefined ? userInfo['username'] : userInfo.username,
+            firstName: userInfo.attributes == undefined ? userInfo['given_name'] : userInfo.attributes['given_name'],
+            lastName: userInfo.attributes == undefined ? userInfo['family_name'] : userInfo.attributes['family_name'],
+            name: userInfo.attributes == undefined ? userInfo['name'] : userInfo.attributes['name'],
+            email: userInfo.attributes == undefined ? userInfo['email'] : userInfo.attributes['email'],
+            upn:
+              userInfo.attributes == undefined
+                ? JSON.parse(userInfo['identities'])[0].userId
+                : JSON.parse(userInfo.attributes['identities'])[0].userId,
+            chatUserId:
+              userInfo.attributes == undefined
+                ? userInfo['custom:ldsobjectGUID']
+                : userInfo.attributes['custom:ldsobjectGUID'],
             photoUrl: '/images/person_48.png',
-            identityId:credential.identityId
+            identityId:credential.identityId        
           });
           if (shouldRedirectToHome) {
-            this.$router.push({name:'home'});
+            if (this.$q.platform.is.electron) {
+              this.$router.push({ path: '/' });
+            } else {
+              this.$router.go('/');
+            }
           }
         })
         .catch((error) => {
@@ -225,10 +235,15 @@ export default {
         photoUrl: '/images/person_48.png'
       });
       Loading.hide();
-      this.$q.localStorage.clear();
-      if (shouldRedirectToSignIn) this.$router.go('/signin');
+      if (shouldRedirectToSignIn) {
+        if (this.$q.platform.is.electron) {
+          this.$router.push({ path: '/signin' });
+        } else {
+          this.$router.go('/signin');
+        }
+      }
     },
-    subscribeToNotifications() {
+     subscribeToNotifications() {
       this.notificationUSubscription = API.graphql(
         graphqlOperation(subscriptions.onUpdateNotifications)
       ).subscribe({
