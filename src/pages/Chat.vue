@@ -17,7 +17,7 @@
 
 <script>
 import Vue from 'vue';
-import { LocalStorage } from 'quasar';
+import { LocalStorage, Platform } from 'quasar';
 import Vuetify from 'vuetify';
 import { Config as AWSConfig, CognitoIdentityCredentials } from 'aws-sdk/global';
 import Polly from 'aws-sdk/clients/polly';
@@ -34,16 +34,18 @@ const poolId = process.env.POOL_ID;
 const poolName = `cognito-idp.${region}.amazonaws.com/${process.env.USER_POOL_ID}`;
 const session = LocalStorage.getItem('botSession');
 console.info('Chat Auth Session :', session);
-
+const token = Platform.is.electron ? session.id_token : session.idToken.jwtToken;
+console.log('Chat Token ', token ,  Platform.is.electron, poolName);
 const credentials = new CognitoIdentityCredentials(
   {
     IdentityPoolId: poolId,
     Logins: {
-      [poolName]: session.idToken.jwtToken
+      [poolName]: token
     }
   },
   { region }
 );
+console.log('CredChat:', credentials);
 const awsConfig = new AWSConfig({ region, credentials, apiVersion: 'latest' });
 const lexRuntimeV2Client = new LexRuntimeV2(awsConfig);
 const pollyClient = new Polly(awsConfig);

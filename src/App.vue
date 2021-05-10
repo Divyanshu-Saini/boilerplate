@@ -10,6 +10,7 @@ export default {
   async created() {
     // Verifying boot files initialisation
     console.info('....App started');
+    console.info('ENV :',process.env.ENV);
   }
 };
 </script>

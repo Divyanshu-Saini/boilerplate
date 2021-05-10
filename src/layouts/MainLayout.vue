@@ -202,7 +202,7 @@ export default {
           });
           if (shouldRedirectToHome) {
             if (this.$q.platform.is.electron) {
-              this.$router.push({ path: '/' });
+              this.$router.push({name:'home'});
             } else {
               this.$router.go('/');
             }
@@ -220,6 +220,7 @@ export default {
         message: 'I\'m signing you out.<br/><span class="text-orange text-weight-bold">Hang on...</span>'
       });
       Auth.signOut({ global: true });
+      this.$q.localStorage.clear();
     },
     clearUserInfo(eventType, shouldRedirectToSignIn) {
       this.$store.commit('global/setUser', {
@@ -237,7 +238,7 @@ export default {
       Loading.hide();
       if (shouldRedirectToSignIn) {
         if (this.$q.platform.is.electron) {
-          this.$router.push({ path: '/signin' });
+          this.$router.push({ name: 'signin'});
         } else {
           this.$router.go('/signin');
         }

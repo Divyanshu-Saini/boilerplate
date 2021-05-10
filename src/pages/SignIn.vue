@@ -48,7 +48,8 @@ export default {
       const tokens = await this.fetchAccessTokens(code, electron, axios, qs, url);
       const userInfo = await this.fetchProfile(tokens.access_token, electron, axios, qs, url);
       console.log(userInfo);
-
+      console.log('Token ', tokens);
+      this.$q.localStorage.set('botSession', tokens);
       const tokenData = {
         token: tokens.id_token,
         expires_at: tokens.expires_in * 1000 + new Date().getTime()
