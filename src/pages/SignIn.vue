@@ -82,6 +82,7 @@ export default {
         const authWindow = new electron.remote.BrowserWindow({
           width: 500,
           height: 600,
+          frame:false,
           show: true
         });
 

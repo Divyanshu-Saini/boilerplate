@@ -1,8 +1,7 @@
 <template>
   <div class="q-pa-md">
     <q-table
-      :grid="$q.screen.sm ||  $q.screen.xs"
-      :dense="$q.screen.md || $q.screen.lg"
+      dense
       title="Notifications"
       :data="notifications"
       :columns="columns"
@@ -10,6 +9,7 @@
       :filter="filter"
       :sort-method="customSort"
       :fullscreen.sync="isFullscreen"
+      virtual-scroll
       binary-state-sort
     >
       <template v-slot:top-right>
@@ -39,7 +39,7 @@ export default {
           align: 'left',
           field: (row) => row.Subject,
           format: (val) => `${val}`,
-          sortable: true
+          sortable: true,
         },
         { name: 'Message', align: 'center', label: 'Description', field: 'Message', sortable: true },
         { name: 'Priority', label: 'Priority', field: 'Priority', sortable: true },
