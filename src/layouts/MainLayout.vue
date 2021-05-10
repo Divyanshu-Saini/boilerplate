@@ -167,8 +167,6 @@ export default {
             identityId:credential.identityId
           });
           if (shouldRedirectToHome) {
-            const session = await Auth.currentSession();
-            this.$q.localStorage.set('botSession', session);
             this.$router.push({name:'home'});
           }
         })

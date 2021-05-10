@@ -1,12 +1,16 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <h1>Notifications</h1>
+  <q-page >
+    <NotificationBrowser />
   </q-page>
 </template>
 
 <script>
+import NotificationBrowser from 'components/NotificationBrowser';
 export default {
-  name: 'Notification'
+  name: 'Notification',
+  components:{
+    NotificationBrowser
+  }
 };
 </script>
 

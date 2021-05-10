@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { Store as LexWebUiStore } from 'nds-aws-lex-web-ui';
-import global from './module-global';
 import createPersistedState from 'vuex-persistedstate';
 
+import global from './module-global';
+import notification from './module-notification';
 // import example from './module-example'
 
 Vue.use(Vuex);
@@ -25,7 +26,8 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store(
     Object.assign({}, LexWebUiStore, {
       modules: {
-        global
+        global,
+        notification
       },
       plugins: [globalState],
       // enable strict mode (adds overhead!)
