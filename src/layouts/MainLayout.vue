@@ -65,9 +65,11 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue';
-import { Auth, Hub, Amplify } from 'aws-amplify';
+import { Auth, Hub, API, graphqlOperation } from 'aws-amplify';
 import { Loading } from 'quasar';
 import { mapActions } from "vuex";
+
+import * as subscriptions from '../graphql/subscriptions';
 
 //import { remote } from 'electron';
 //import axios from 'axios';
@@ -102,17 +104,31 @@ export default {
   data() {
     return {
       leftDrawerOpen: false,
-      essentialLinks: linksData
+      essentialLinks: linksData,
+      notificationSubscription: undefined,
     };
   },
   created() {
     console.log(this.$store.state.global.bot.avatarUrl);
     console.log(this.$store.state.global.user.photoUrl);
     this.setNotification();
+    this.subscribeToNotifications();
     Hub.listen('auth', this.handleAuthEvents);
   },
   methods: {
       ...mapActions("notification", ["setNotification"]),
+    showNotif (position) {
+      this.$q.notify({
+        color :'purple',
+        textColor:'white',
+        message:'Testing  Notification!',
+        position,
+        actions:  [
+            { label: 'Dismiss', color: 'yellow', handler: () => { /* console.log('wooow') */ } }
+          ],
+        timeout: Math.random() * 5000 + 3000
+      })
+    },
     personalise() {
       const message = {
         type: "human",
@@ -209,7 +225,27 @@ export default {
       Loading.hide();
       this.$q.localStorage.clear();
       if (shouldRedirectToSignIn) this.$router.go('/signin');
-    }
+    },
+    subscribeToNotifications() {
+      this.notificationSubscription = API.graphql(
+        graphqlOperation(subscriptions.onUpdateNotifications)
+      ).subscribe({
+        next: ({ provider, value }) => {
+          console.log({ provider, value });
+          this.showNotif('top');
+        },
+        error: (error) => console.warn(error),
+      });
+    },
+    unsubscribeToNotifications() {
+      if (
+        this.notificationSubscription != undefined ||
+        this.notificationSubscription != null
+      ) {
+        this.notificationSubscription.unsubscribe();
+        this.notificationSubscription = undefined;
+      }
+    },
   }
 };
 </script>

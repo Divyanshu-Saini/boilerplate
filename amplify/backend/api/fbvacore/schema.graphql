@@ -28,5 +28,7 @@ type Notifications @model @auth(rules: [{allow: private}]) {
   Actions: AWSJSON
   AdditionalInfo: AWSJSON
   ReferenceInfo: AWSJSON
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
  

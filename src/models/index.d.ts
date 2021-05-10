@@ -38,6 +38,8 @@ export declare class Notifications {
   readonly Actions?: string;
   readonly AdditionalInfo?: string;
   readonly ReferenceInfo?: string;
+  readonly createdAt: string;
+  readonly updatedAt: string;
   constructor(init: ModelInit<Notifications>);
   static copyOf(source: Notifications, mutator: (draft: MutableModel<Notifications>) => MutableModel<Notifications> | void): Notifications;
 }
