@@ -4,8 +4,10 @@ import { schema } from './schema';
 
 
 
-const { Channel } = initSchema(schema);
+const { Channel, Personalize, Notifications } = initSchema(schema);
 
 export {
-  Channel
+  Channel,
+  Personalize,
+  Notifications
 };

@@ -5,3 +5,27 @@ type Channel @model {
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
+
+type Personalize @model {
+  id:ID!
+  userId: String!
+  botName: String!
+  avatarUrl: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Notifications @model  {
+  id: ID!
+  AllowedChannels: AWSJSON!
+  Targets: AWSJSON!
+  ExpiresOn: AWSDateTime!
+  DeliveryStatus: AWSJSON!
+  Status: String!
+  Priority: String!
+  Subject: String!
+  Message: String
+  Actions: AWSJSON
+  AdditionalInfo: AWSJSON
+  ReferenceInfo: AWSJSON
+}
