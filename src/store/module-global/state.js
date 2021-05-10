@@ -10,9 +10,12 @@ export default function () {
       email: '',
       upn: '',
       chatUserId: '',
-      photoUrl: '/images/person_48.png',
-      identityId:''
+      photoUrl: 'https://dev.d17tn2tjvjpqrl.amplifyapp.com/images/person_48.png',
+      identityId: ''
     },
-    bot: { name: 'For Better Virtual Assistant', avatarUrl: '/images/logo_48.png' }
+    bot: {
+      name: 'For Better Virtual Assistant',
+      avatarUrl: 'https://dev.d17tn2tjvjpqrl.amplifyapp.com/images/logo_48.png'
+    }
   };
 }
