@@ -1,3 +1,3 @@
-export function getUser(state) {
-  return state.notifications
+export function notifications(state) {
+  return state.notifications;
 };

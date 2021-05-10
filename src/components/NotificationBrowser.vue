@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import {  mapGetters } from "vuex";
 
 export default {
   data () {
@@ -44,17 +44,16 @@ export default {
         { name: 'Message', align: 'center', label: 'Description', field: 'Message', sortable: true },
         { name: 'Priority', label: 'Priority', field: 'Priority', sortable: true },
         { name: 'Status', label: 'Status', field: 'Status', sortable: true },
-        { name: 'CreatedOn', label: 'Date/Time', field: 'CreatedOn', sortable: true },
+        { name: 'ExpiresOn', label: 'Expire Date/Time', field: 'ExpiresOn', format:(val)=>this.$options.filters.formatDate(val),sortable: true },
       ]
     }
   },
 
   computed: {
-    ...mapGetters("notifications", ["notifications"]),
+    ...mapGetters("notification", ["notifications"]),
   },
 
   methods: {
-     ...mapActions("notifications", ["setNotification"]),
     customSort (rows, sortBy, descending) {
       const data = [ ...rows ]
 
@@ -77,9 +76,9 @@ export default {
       return data
     }
   },
-
-  created(){
-    this.setNotification();
+  mounted(){
+    console.info('Notification :', this.notifications);
+    console.info('Filters ', this.$options.filters)
   }
 }
 </script>

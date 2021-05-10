@@ -67,6 +67,7 @@
 import EssentialLink from 'components/EssentialLink.vue';
 import { Auth, Hub, Amplify } from 'aws-amplify';
 import { Loading } from 'quasar';
+import { mapActions } from "vuex";
 
 //import { remote } from 'electron';
 //import axios from 'axios';
@@ -107,9 +108,11 @@ export default {
   created() {
     console.log(this.$store.state.global.bot.avatarUrl);
     console.log(this.$store.state.global.user.photoUrl);
+    this.setNotification();
     Hub.listen('auth', this.handleAuthEvents);
   },
   methods: {
+      ...mapActions("notification", ["setNotification"]),
     handleAuthEvents(data) {
       switch (data.payload.event) {
         case 'signIn':
@@ -197,6 +200,7 @@ export default {
         photoUrl: '/images/person_48.png'
       });
       Loading.hide();
+      this.$q.localStorage.clear();
       if (shouldRedirectToSignIn) this.$router.go('/signin');
     }
   }
