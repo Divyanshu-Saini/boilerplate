@@ -73,8 +73,8 @@ const awsWeb = {
   oauth: {
     domain: 'fbvacore-dev.auth.us-east-1.amazoncognito.com',
     scope: ['email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
-    redirectSignIn: 'http://localhost:8080/',
-    redirectSignOut: 'http://localhost:8080/',
+    redirectSignIn: "https://dev.d17tn2tjvjpqrl.amplifyapp.com/",
+    redirectSignOut: "https://dev.d17tn2tjvjpqrl.amplifyapp.com/",
     responseType: 'code'
   },
   federationTarget: 'COGNITO_USER_POOLS',

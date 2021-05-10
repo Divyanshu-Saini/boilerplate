@@ -3,7 +3,7 @@
     <div>
       <q-chip size="24px">
         <q-avatar size="32px">
-          <q-img src="/images/logo_64.png"></q-img>
+          <q-img src="https://dev.d17tn2tjvjpqrl.amplifyapp.com/images/logo_64.png"></q-img>
         </q-avatar>
         For Better Virtual Assistant
       </q-chip>

@@ -197,7 +197,7 @@ export default {
               userInfo.attributes == undefined
                 ? userInfo['custom:ldsobjectGUID']
                 : userInfo.attributes['custom:ldsobjectGUID'],
-            photoUrl: '/images/person_48.png',
+            photoUrl: 'https://dev.d17tn2tjvjpqrl.amplifyapp.com/images/person_48.png',
             identityId:credential.identityId        
           });
           if (shouldRedirectToHome) {
@@ -233,7 +233,7 @@ export default {
         email: '',
         upn: '',
         chatUserId: '',
-        photoUrl: '/images/person_48.png'
+        photoUrl: 'https://dev.d17tn2tjvjpqrl.amplifyapp.com/images/person_48.png'
       });
       Loading.hide();
       if (shouldRedirectToSignIn) {
