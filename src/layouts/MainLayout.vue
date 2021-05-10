@@ -8,11 +8,24 @@
         </q-avatar>
         <q-toolbar-title v-html="this.$store.state.global.bot.name"> </q-toolbar-title>
 
-        <q-chip clickable>
-          <q-avatar size="24px">
+        <q-chip clickable square color="white" outline>
+          <q-avatar size="24px" color="warning">
             <img :src="this.$store.state.global.user.photoUrl" />
           </q-avatar>
           <span v-html="this.$store.state.global.user.name"></span>
+          <q-menu auto-close fit transition-show="scale" transition-hide="scale">
+            <q-list>
+              <q-item clickable v-if="!this.$store.state.global.user.isSignedIn" v-close-popup @click="signIn()">
+                <q-item-section>Sign In</q-item-section>
+              </q-item>
+              <q-item clickable v-if="this.$store.state.global.user.isSignedIn" v-close-popup>
+                <q-item-section>Personalize</q-item-section>
+              </q-item>
+              <q-item clickable v-if="this.$store.state.global.user.isSignedIn" v-close-popup @click="signOut()">
+                <q-item-section>Sign Out</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
         </q-chip>
       </q-toolbar>
     </q-header>
@@ -52,7 +65,11 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue';
-import { Auth, Hub } from 'aws-amplify';
+import { Auth, Hub, Amplify } from 'aws-amplify';
+import { Loading } from 'quasar';
+
+//import { remote } from 'electron';
+//import axios from 'axios';
 
 const linksData = [
   {
@@ -96,29 +113,29 @@ export default {
     handleAuthEvents(data) {
       switch (data.payload.event) {
         case 'signIn':
-          this.fillUserInfo(data.payload.event);
+          this.fillUserInfo(data.payload.event, true);
           //this.subscribeToNotifications();
           console.log('user signed in');
           break;
         case 'signOut':
         case 'oAuthSignOut':
           //this.unsubscribeToNotifications();
-          this.clearUserInfo(data.payload.event);
+          this.clearUserInfo(data.payload.event, true);
           console.log('user signed out');
           break;
         case 'signIn_failure':
           //this.unsubscribeToNotifications();
-          this.clearUserInfo(data.payload.event);
+          this.clearUserInfo(data.payload.event, true);
           console.log('user sign in failed');
           break;
         case 'tokenRefresh':
-          this.fillUserInfo(data.payload.event);
+          this.fillUserInfo(data.payload.event, false);
           //this.subscribeToNotifications();
           console.log('token refresh succeeded');
           break;
         case 'tokenRefresh_failure':
           //this.unsubscribeToNotifications();
-          this.clearUserInfo(data.payload.event);
+          this.clearUserInfo(data.payload.event, true);
           console.log('token refresh failed');
           break;
         case 'configured':
@@ -126,7 +143,13 @@ export default {
           break;
       }
     },
-    fillUserInfo(eventType) {
+    async signIn() {
+      Loading.show({
+        message: 'I\'m signing you in.<br/><span class="text-orange text-weight-bold">Hang on...</span>'
+      });
+      Auth.federatedSignIn();
+    },
+    fillUserInfo(eventType, shouldRedirectToHome) {
       Auth.currentAuthenticatedUser({ bypassCache: true })
         .then(userInfo => {
           this.$store.commit('global/setUser', {
@@ -141,12 +164,22 @@ export default {
             chatUserId: userInfo.attributes['custom:ldsobjectGUID'],
             photoUrl: '/images/person_48.png'
           });
+          if (shouldRedirectToHome) this.$router.go('/');
         })
         .catch(error => {
           console.log(error);
+        })
+        .finally(() => {
+          Loading.hide();
         });
     },
-    clearUserInfo(eventType) {
+    signOut() {
+      Loading.show({
+        message: 'I\'m signing you out.<br/><span class="text-orange text-weight-bold">Hang on...</span>'
+      });
+      Auth.signOut({ global: true });
+    },
+    clearUserInfo(eventType, shouldRedirectToSignIn) {
       this.$store.commit('global/setUser', {
         isSignedIn: false,
         lastSignedInState: eventType,
@@ -159,6 +192,8 @@ export default {
         chatUserId: '',
         photoUrl: '/images/person_48.png'
       });
+      Loading.hide();
+      if (shouldRedirectToSignIn) this.$router.go('/signin');
     }
   }
 };

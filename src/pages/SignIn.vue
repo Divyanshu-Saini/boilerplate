@@ -25,7 +25,7 @@
         to="/"
         label="Sign In"
         no-caps
-        @click="signIn"
+        @click="signIn()"
       />
     </div>
   </div>
@@ -33,12 +33,48 @@
 
 <script>
 import { Auth } from 'aws-amplify';
+import { Loading } from 'quasar';
+
+//import { remote } from 'electron';
+//import axios from 'axios';
+//import qs from 'qs';
+//import { parse } from 'url';
 
 export default {
   name: 'SignIn',
   methods: {
-    signIn: () => {
+    async signIn() {
+      Loading.show({
+        message: 'I\'m signing you in.<br/><span class="text-orange text-weight-bold">Hang on...</span>'
+      });
       Auth.federatedSignIn();
+      return;
+      /*const code = await this.signInWithPopup();
+      const tokens = await this.fetchAccessTokens(code);
+      const userInfo = await this.fetchProfile(tokens.access_token);
+      //Auth.federatedSignIn()
+      console.log(userInfo);
+
+      //const { idToken, accessTokenExpirationDate } = {userInfo.idToken, ;
+      //const userData = {
+      //  name: userInfo.name,
+      //  email: userInfo.email
+      //};
+
+      const credentials = await Auth.federatedSignIn(
+        'ForBetterVirtualAssistant-Dev',
+        { token: userInfo.idToken, expires_at: userInfo.accessTokenExpirationDate },
+        { name: userInfo.name, email: userInfo.email }
+      );
+
+      if (credentials.authenticated) {
+        resolve({
+          identityId: credentials._identityId,
+          idToken
+        });
+      } else {
+        reject('Authentication failed');
+      }*/
     }
   }
 };
