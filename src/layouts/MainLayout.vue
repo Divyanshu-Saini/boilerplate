@@ -105,7 +105,8 @@ export default {
     return {
       leftDrawerOpen: false,
       essentialLinks: linksData,
-      notificationSubscription: undefined,
+      notificationUSubscription: undefined,
+      notificationCSubscription:undefined,
     };
   },
   created() {
@@ -116,12 +117,10 @@ export default {
     Hub.listen('auth', this.handleAuthEvents);
   },
   methods: {
-      ...mapActions("notification", ["setNotification"]),
-    showNotif (position) {
+      ...mapActions("notification", ["setNotification","pushNotification"]),
+    showNotif (position,message) {
       this.$q.notify({
-        color :'purple',
-        textColor:'white',
-        message:'Testing  Notification!',
+        message,
         position,
         actions:  [
             { label: 'Dismiss', color: 'yellow', handler: () => { /* console.log('wooow') */ } }
@@ -227,25 +226,33 @@ export default {
       if (shouldRedirectToSignIn) this.$router.go('/signin');
     },
     subscribeToNotifications() {
-      this.notificationSubscription = API.graphql(
+      this.notificationUSubscription = API.graphql(
         graphqlOperation(subscriptions.onUpdateNotifications)
       ).subscribe({
         next: ({ provider, value }) => {
           console.log({ provider, value });
-          this.showNotif('top');
+          let target = JSON.parse(value.data.onUpdateNotifications.Targets);
+          for(const t of target)
+          if(t.id == this.$store.state.global.user.email){
+             this.showNotif('top',value.data.onUpdateNotifications.Message);
+          }
         },
         error: (error) => console.warn(error),
       });
-    },
-    unsubscribeToNotifications() {
-      if (
-        this.notificationSubscription != undefined ||
-        this.notificationSubscription != null
-      ) {
-        this.notificationSubscription.unsubscribe();
-        this.notificationSubscription = undefined;
-      }
-    },
+      this.notificationCSubscription = API.graphql(
+        graphqlOperation(subscriptions.onCreateNotifications)
+      ).subscribe({
+        next: ({ provider, value }) => {
+          console.log({ provider, value });
+          let target = JSON.parse(value.data.onCreateNotifications.Targets);
+          for(const t of target)
+          if(t.id == this.$store.state.global.user.email){
+             this.showNotif('top',value.data.onCreateNotifications.Message);
+          }
+        },
+        error: (error) => console.warn(error),
+      });
+    }
   }
 };
 </script>
