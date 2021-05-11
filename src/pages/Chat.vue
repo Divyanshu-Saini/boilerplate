@@ -1,27 +1,131 @@
 <template>
   <q-page>
-    <lex-web-ui v-on:updateLexState="onUpdateLexState"></lex-web-ui>
+    <div class="desk electron" v-if="$q.platform.is.electron || $q.platform.is.desktop">
+      <lex-web-ui v-on:updateLexState="onUpdateLexState" v-if="initialiseLex"></lex-web-ui>
+    </div>
+    <div class="m-ios" v-if="$q.platform.is.ios">
+      <lex-web-ui v-on:updateLexState="onUpdateLexState" v-if="initialiseLex"></lex-web-ui>
+    </div>
+    <div class="m-android" v-if="$q.platform.is.android">
+      <lex-web-ui v-on:updateLexState="onUpdateLexState" v-if="initialiseLex"></lex-web-ui>
+    </div>
+    <q-banner inline-actions class="text-white bg-red" v-if="!initialiseLex">
+      You donot have permission to use chat feature. Check with your admin!
+    </q-banner>
   </q-page>
 </template>
 
 <script>
 import Vue from 'vue';
+import { LocalStorage, Platform } from 'quasar';
 import Vuetify from 'vuetify';
+import { Config as AWSConfig, CognitoIdentityCredentials } from 'aws-sdk/global';
+import Polly from 'aws-sdk/clients/polly';
+import LexRuntimeV2 from 'aws-sdk/clients/lexruntimev2';
+import { Plugin as LexWebUi } from 'nds-aws-lex-web-ui';
 import 'vuetify/dist/vuetify.min.css';
 import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import 'material-design-icons/iconfont/material-icons.css';
 import 'nds-aws-lex-web-ui/dist/lex-web-ui.css';
 
 Vue.use(Vuetify);
+const region = process.env.REGION;
+const poolId = process.env.POOL_ID;
+const poolName = `cognito-idp.${region}.amazonaws.com/${process.env.USER_POOL_ID}`;
+const session = LocalStorage.getItem('botSession');
+console.info('Chat Auth Session :', session);
+const token = Platform.is.electron ? session.id_token : session.idToken.jwtToken;
+console.log('Chat Token ', token ,  Platform.is.electron, poolName);
+
+let authCred = new CognitoIdentityCredentials(
+  {
+    IdentityPoolId: poolId,
+    Logins: {
+      [poolName]: token
+    }
+  },
+  { region }
+);
+
+let unAuthCred =  new CognitoIdentityCredentials(
+  {
+    IdentityPoolId: poolId,
+  },
+  { region }
+);
+console.log('CredChat auth:', authCred);
+console.log('CredChat unauth:', unAuthCred);
+const credentials = ( Platform.is.ios ||  Platform.is.android ) ? unAuthCred : authCred ;
+console.log('CredChat:', credentials);
+const awsConfig = new AWSConfig({ region, credentials, apiVersion: 'latest' });
+const lexRuntimeV2Client = new LexRuntimeV2(awsConfig);
+const pollyClient = new Polly(awsConfig);
+
+const config = {
+  cognito: { poolId },
+  lex: {
+    botName: 'FBVA_Dev',
+    initialUtterance: '',
+    reInitSessionAttributesOnRestart: false,
+    retryOnLexPostTextTimeout: 'true',
+    retryCountPostTextTimeout: '2',
+    v2BotId: process.env.V2_BOT_ID,
+    v2BotAliasId:  process.env.V2_BOT_ALIAS_ID,
+    v2BotLocaleId:  process.env.V2_BOT_LOCALE_ID,
+    initialText: '',
+    initialSpeechInstruction: ''
+  },
+  ui: {
+    showHeader: false,
+    toolbarTitle: 'Chat with Eva',
+    toolbarLogo: '',
+    positiveFeedbackIntent: 'Thumbs up',
+    negativeFeedbackIntent: 'Thumbs down',
+    helpIntent: 'Help',
+    enableLogin: false,
+    forceLogin: false,
+    AllowSuperDangerousHTMLInMessage: true,
+    shouldDisplayResponseCardTitle: false,
+    saveHistory: true,
+    minButtonContent: 'X',
+    hideInputFieldsForButtonResponse: false,
+    pushInitialTextOnRestart: false,
+    directFocusToBotInput: false,
+    showDialogStateIcon: false,
+    backButton: false,
+    messageMenu: true,
+    hideButtonMessageBubble: false,
+    showMessageDate: true
+  },
+  polly: {
+    voiceId: 'Salli'
+  },
+  recorder: {
+    enable: false,
+    preset: 'speech_recognition'
+  }
+};
+
+Vue.use(LexWebUi, {
+  config,
+  awsConfig,
+  lexRuntimeV2Client,
+  pollyClient
+});
 
 export default {
   name: 'Chat',
+  data() {
+    return {
+      initialiseLex: false
+    };
+  },
   methods: {
     onUpdateLexState(lState) {
-      console.log('Lex State :', lState);
+      console.info('Lex State :', lState);
     },
     initialiseBot(sessionId) {
-      console.log('Session Id :', sessionId);
+      console.info('Session Id :', sessionId);
       this.$store.commit('updateLexState', { sessionId });
       const params = {
         botAliasId: 'EQJNACDMHP',
@@ -31,7 +135,6 @@ export default {
       };
       this.$lexWebUi.lexRuntimeV2Client.getSession(params, (error, data) => {
         if (error) {
-          console.log('Error in getSession :', error);
           const putParams = {
             ...params,
             sessionState: {}
@@ -39,7 +142,6 @@ export default {
           this.setSession(putParams);
           this.getInitialResponse({ ...params, text: 'InitMsg' });
         }
-        console.log('Get Session data :', data);
         const putParams = {
           sessionState: {},
           ...params,
@@ -52,24 +154,25 @@ export default {
     setSession(params) {
       this.$lexWebUi.lexRuntimeV2Client.putSession(params, (error, data) => {
         if (error) {
-          console.log('Error in put session :', error);
+          console.error('Error in put session :', error);
+          return;
         }
-        console.log('New Session :', data);
+        console.info('New Session :', data);
       });
     },
     getInitialResponse(params) {
       this.$lexWebUi.lexRuntimeV2Client.recognizeText(params, (err, res) => {
         if (err) {
           console.error('Error in RecogniseText :', err);
+          return;
         }
-        console.log('Data from recogniseText :', res);
         if (res.sessionState) {
           // this is v2 response
           res.sessionAttributes = res.sessionState.sessionAttributes;
           res.dialogState = res.sessionState.intent.state;
           const finalMessages = [];
           if (res.messages && res.messages.length > 0) {
-            res.messages.forEach(mes => {
+            res.messages.forEach((mes) => {
               if (mes.contentType === 'ImageResponseCard') {
                 res.responseCard = {};
                 res.responseCard.version = '1';
@@ -93,7 +196,6 @@ export default {
             const msg = `{"messages": ${JSON.stringify(finalMessages)} }`;
             res.message = msg;
           }
-          console.log('Res$$$$->', res);
           let response = res;
 
           if (response.sessionState || (response.message && response.message.includes('{"messages":'))) {
@@ -149,24 +251,46 @@ export default {
               alts
             });
           }
-          console.log('Process Response :', res);
         }
       });
     }
   },
-  created() {
-    this.initialiseBot(this.$store.state.global.user.chatUserId);
+  async created() {
+    if (!this.$_.isEmpty(this.$store.state.global.user.identityId)) {
+      this.initialiseBot(this.$store.state.global.user.identityId);
+      this.$data.initialiseLex = true;
+    }
   }
 };
 </script>
 
 <style lang="scss">
-#lex-web {
-  .application--wrap {
-    min-height: 92vh !important;
+  #lex-web {
+    .message-list-container {
+      position: absolute;
+    }
   }
-  .message-list-container {
-    position: absolute;
+.electron,
+.desk {
+  #lex-web {
+    .application--wrap {
+      min-height: 92vh !important;
+    }
+  }
+}
+.m-ios {
+  #lex-web {
+    .application--wrap {
+      min-height: 88vh !important;
+    }
+  }
+}
+
+.m-android {
+  #lex-web {
+    .application--wrap {
+      min-height: 88vh !important;
+    }
   }
 }
 </style>

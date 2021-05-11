@@ -9,7 +9,10 @@ npm install
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
 ```bash
-quasar dev
+npm run start:spa
+npm run start:electron
+npm run start:android
+npm run start:ios
 ```
 
 ### Lint the files
@@ -19,7 +22,10 @@ npm run lint
 
 ### Build the app for production
 ```bash
-quasar build
+npm run build:spa
+npm run build:electron
+npm run build:android
+npm run build:ios
 ```
 
 ### Customize the configuration

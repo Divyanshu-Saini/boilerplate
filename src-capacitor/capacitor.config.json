@@ -1,5 +1,5 @@
 {
-  "appId": "org.fbva.core.com",
+  "appId": "com.fbva.tcpl.app",
   "appName": "For Better Virtual Assistant(FBVA)",
   "bundledWebRuntime": false,
   "npmClient": "npm",

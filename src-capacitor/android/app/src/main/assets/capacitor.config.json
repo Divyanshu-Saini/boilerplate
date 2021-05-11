@@ -1,0 +1,10 @@
+{
+  "appId": "com.fbva.tcpl.app",
+  "appName": "For Better Virtual Assistant(FBVA)",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "server": {
+    "url": "http://192.168.56.1:8080"
+  }
+}

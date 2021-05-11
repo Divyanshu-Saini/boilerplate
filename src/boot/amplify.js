@@ -1,16 +1,15 @@
-// import something here
 import { Platform } from 'quasar';
-import Amplify from 'aws-amplify';
-
+import { Amplify, Auth } from 'aws-amplify';
 import test from '../fbva-aws-exports-test';
 import prod from '../fbva-aws-exports-prod';
 import dev from '../fbva-aws-exports-dev';
+import { route } from 'quasar/wrappers';
+
 // "async" is optional;
 // more info on params: https://quasar.dev/quasar-cli/boot-files
-export default (/* { app, router, Vue ... } */) => {
-  // something to do
+export default async ({ router, store }) => {
   let awsIos, awsAndroid, awsmobile, awsDesktop, awsWeb;
-  if (process.env.NODE_ENV == 'prod') {
+  if (process.env.NODE_ENV == 'production') {
     awsIos = prod.awsIos;
     awsAndroid = prod.awsAndroid;
     awsmobile = prod.awsmobile;
@@ -30,13 +29,62 @@ export default (/* { app, router, Vue ... } */) => {
     awsWeb = dev.awsWeb;
   }
 
+  let awsCurrentConfig = null;
+
   if (Platform.is.mobile) {
-    if (Platform.is.ios) Amplify.configure(awsIos);
-    else if (Platform.is.android) Amplify.configure(awsAndroid);
-    else Amplify.configure(awsmobile);
-  } else if (Platform.is.electron || Platform.is.win) {
-    Amplify.configure(awsDesktop);
+    if (Platform.is.ios) awsCurrentConfig = awsIos;
+    else if (Platform.is.android) awsCurrentConfig = awsAndroid;
+    else awsCurrentConfig = awsmobile;
+  } else if (Platform.is.electron && Platform.is.win) {
+    awsCurrentConfig = awsDesktop;
   } else {
-    Amplify.configure(awsWeb);
+    awsCurrentConfig = awsWeb;
+  }
+
+  if (awsCurrentConfig != null) {
+    Amplify.configure(awsCurrentConfig);
+
+    //check for current session
+    try {
+      const userInfo = await Auth.currentAuthenticatedUser({ bypassCache: true });
+      const curSession = await Auth.currentSession();
+      const credential = await Auth.currentCredentials();
+      if (curSession.isValid()) {
+        console.log('Already signed in with valid token');
+      } else {
+        console.log('Token invalid and will be refreshed');
+        const refreshToken = curSession.getRefreshToken();
+        userInfo.refreshSession(refreshToken);
+      }
+      //token validated, so safe to refill sign-in info
+      store.commit('global/setUser', {
+        isSignedIn: true,
+        lastSignedInState: 'signIn',
+        id: userInfo.username,
+        firstName: userInfo.attributes['given_name'],
+        lastName: userInfo.attributes['family_name'],
+        name: userInfo.attributes['name'],
+        email: userInfo.attributes['email'],
+        upn: JSON.parse(userInfo.attributes['identities'])[0].userId,
+        chatUserId: userInfo.attributes['custom:ldsobjectGUID'],
+        photoUrl: '/images/person_48.png',
+        identityId:credential.identityId,
+      });
+    } catch (error) {
+      console.log('Failed to authenticate existing token or token not present locally');
+      store.commit('global/setUser', {
+        isSignedIn: false,
+        lastSignedInState: 'signIn_failure',
+        id: '',
+        firstName: '',
+        lastName: '',
+        name: 'Not signed in',
+        email: '',
+        upn: '',
+        chatUserId: '',
+        photoUrl: '/images/person_48.png',
+        identityId:''
+      });
+    }
   }
 };

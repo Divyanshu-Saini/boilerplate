@@ -28,7 +28,7 @@ module.exports = {
 
     // https://github.com/prettier/eslint-config-prettier#installation
     // usage with Prettier, provided by 'eslint-config-prettier'.
-    'plugin:prettier/recommended',
+    // 'plugin:prettier/recommended',
     'prettier'
   ],
 
@@ -53,6 +53,7 @@ module.exports = {
 
   // add your custom rules here
   rules: {
+    'arrow-parens': ['error', 'always'],
     'prefer-promise-reject-errors': 'off',
 
     // allow debugger during development only

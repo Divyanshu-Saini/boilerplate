@@ -1,4 +1,5 @@
-import { app, BrowserWindow, nativeTheme } from 'electron';
+import { app, BrowserWindow, nativeTheme, Tray, nativeImage, Menu } from 'electron';
+import  path from 'path';
 
 try {
   if (process.platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
@@ -15,15 +16,18 @@ if (process.env.PROD) {
 }
 
 let mainWindow;
+const image = nativeImage.createFromPath(path.join(__dirname, '../icons/icon.ico'));
 
 function createWindow() {
   /**
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    width: 600,
-    height: 800,
-    useContentSize: true,
+    width: 500,
+    height: 700,
+    useContentSize: false,
+    x: 800,
+    y: 0,
     webPreferences: {
       // Change from /quasar.conf.js > electron > nodeIntegration;
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
@@ -36,8 +40,17 @@ function createWindow() {
   });
 
   mainWindow.loadURL(process.env.APP_URL);
-
-  mainWindow.on('closed', () => {
+  mainWindow.setMenuBarVisibility(false);
+      mainWindow.tray = new Tray(image);
+    const menu = Menu.buildFromTemplate([
+        {role: "quit"}, 
+    ]);
+    mainWindow.tray.setToolTip("For Better Virtual Assistance");
+    mainWindow.tray.setContextMenu(menu);
+    mainWindow.tray.on('click',()=>{
+      mainWindow.isVisible()? mainWindow.hide() : mainWindow.show();
+    })
+    mainWindow.on('closed', () => {
     mainWindow = null;
   });
 }

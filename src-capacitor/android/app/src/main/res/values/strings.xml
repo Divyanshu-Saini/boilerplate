@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">For Better Virtual Assistant(FBVA)</string>
+    <string name="title_activity_main">For Better Virtual Assistant(FBVA)</string>
+    <string name="package_name">com.fbva.tcpl.app</string>
+    <string name="custom_url_scheme">com.fbva.tcpl.app</string>
+</resources>

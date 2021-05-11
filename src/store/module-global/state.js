@@ -1,17 +1,21 @@
-export default function() {
+export default function () {
   return {
     user: {
-      isSignedIn: true,
+      isSignedIn: false,
       lastSignedInState: 'Not signed in',
-      id: 'for-better-virtual-assistant-dev_divyanshu.aws@ndsglobal.com',
-      firstName: 'Divyanshu',
-      lastName: 'Saini',
-      name: 'Divyanshu Saini',
-      email: 'divyanshu.aws@ndsglobal.com',
-      upn: 'divyanshu.aws@ndsglobal.com',
-      chatUserId: '04d0e2eb-4a11-411b-a138-e02d4f0f2369',
-      photoUrl: '/images/person_48.png'
+      id: '',
+      firstName: '',
+      lastName: '',
+      name: '',
+      email: '',
+      upn: '',
+      chatUserId: '',
+      photoUrl: 'https://dev.d17tn2tjvjpqrl.amplifyapp.com/images/person_48.png',
+      identityId: ''
     },
-    bot: { name: 'For Better Virtual Assistant', avatarUrl: '/images/logo_48.png' }
+    bot: {
+      name: 'For Better Virtual Assistant',
+      avatarUrl: 'https://dev.d17tn2tjvjpqrl.amplifyapp.com/images/logo_48.png'
+    }
   };
 }

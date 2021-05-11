@@ -4,15 +4,13 @@
   </div>
 </template>
 <script>
+import { Auth } from 'aws-amplify';
 export default {
   name: 'App',
-  created() {
+  async created() {
     // Verifying boot files initialisation
-    console.log('LexWebUi :', this.$lexWebUi);
-    console.log('lodasd :', this.$_);
-    console.log('Axios :', this.$axios);
-    console.log('I18n :', this.$i18n);
-    console.log('moment :', this.$moment);
+    console.info('....App started');
+    console.info('ENV :',process.env.ENV);
   }
 };
 </script>

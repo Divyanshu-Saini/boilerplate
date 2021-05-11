@@ -7,8 +7,9 @@
 // https://v1.quasar.dev/quasar-cli/quasar-conf-js
 /* eslint-env node */
 const ESLintPlugin = require('eslint-webpack-plugin');
+const envparser = require('./envparser.js');
 
-module.exports = function(/* ctx */) {
+module.exports = function (/* ctx */) {
   return {
     // https://v1.quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -19,7 +20,7 @@ module.exports = function(/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v1.quasar.dev/quasar-cli/boot-files
-    boot: ['i18n', 'axios', 'amplify', 'lodash', 'moment', 'lex-web-ui'],
+    boot: ['i18n', 'axios', 'amplify', 'lodash', 'moment'],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ['app.scss'],
@@ -40,6 +41,8 @@ module.exports = function(/* ctx */) {
 
     // Full list of options: https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
+      // TODO : remove ENV
+      env: { ...envparser(), ENV: process.env },
       vueRouterMode: 'hash', // available values: 'hash', 'history'
       vueCompiler: true,
       // transpile: false,
@@ -69,7 +72,7 @@ module.exports = function(/* ctx */) {
     devServer: {
       https: false,
       port: 8080,
-      open: true // opens browser window automatically
+      open: false // opens browser window automatically
     },
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -91,12 +94,23 @@ module.exports = function(/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'AppFullscreen',
+        'AppVisibility',
+        'BottomSheet',
+        'Dialog',
+        'Loading',
+        'LoadingBar',
+        'LocalStorage',
+        'SessionStorage',
+        'Meta',
+        'Notify'
+      ]
     },
 
     // animations: 'all', // --- includes all animations
     // https://v1.quasar.dev/options/animations
-    animations: [],
+    animations: 'all',
 
     // https://v1.quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {
@@ -152,7 +166,7 @@ module.exports = function(/* ctx */) {
 
     // Full list of options: https://v1.quasar.dev/quasar-cli/developing-capacitor-apps/configuring-capacitor
     capacitor: {
-      hideSplashscreen: true
+      hideSplashscreen: false
     },
 
     // Full list of options: https://v1.quasar.dev/quasar-cli/developing-electron-apps/configuring-electron

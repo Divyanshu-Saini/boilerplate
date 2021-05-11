@@ -2,7 +2,7 @@
   "name": "fbva-core",
   "version": "0.0.1",
   "description": "Client for TCPL Lex bot",
-  "productName": "For Better Virtual Assistant(FBVA)",
+  "productName": "For Better Virtual Assistant",
   "author": "NDS Global Cloud Solutions Team",
   "private": true,
   "scripts": {
@@ -25,6 +25,7 @@
     "aws-sdk": "^2.892.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "electron-oauth-helper": "^5.1.1",
     "lodash": "^4.17.21",
     "material-design-icons": "^3.0.1",
     "moment": "^2.29.1",
@@ -32,10 +33,12 @@
     "quasar": "^1.0.0",
     "roboto-fontface": "^0.10.0",
     "vue-i18n": "^8.0.0",
-    "vuetify": "^0.17.7"
+    "vuetify": "^0.17.7",
+    "vuex-persistedstate": "^4.0.0-beta.3"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",
+    "@quasar/quasar-app-extension-dotenv": "^1.1.0",
     "babel-eslint": "^10.0.1",
     "devtron": "^1.4.0",
     "electron": "^9.4.4",
@@ -48,7 +51,8 @@
     "eslint-plugin-vue": "^7.7.0",
     "eslint-webpack-plugin": "^2.4.0",
     "husky": "^6.0.0",
-    "lint-staged": "^10.5.4"
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1"
   },
   "browserslist": [
     "ie >= 11",

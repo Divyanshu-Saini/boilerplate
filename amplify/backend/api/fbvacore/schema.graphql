@@ -1,7 +1,34 @@
-type Channel @model {
+type Channel @model @auth(rules: [{allow: public}]) {
   id: ID!
   title: String!
   isEnabled: Boolean!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
+
+type Personalize @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userId: String!
+  botName: String!
+  avatarUrl: String!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Notifications @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  AllowedChannels: AWSJSON!
+  Targets: AWSJSON!
+  ExpiresOn: AWSDateTime!
+  DeliveryStatus: AWSJSON!
+  Status: String!
+  Priority: String!
+  Subject: String!
+  Message: String
+  Actions: AWSJSON
+  AdditionalInfo: AWSJSON
+  ReferenceInfo: AWSJSON
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+ 

@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "fbvacore1be543df": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d17tn2tjvjpqrl",
+          "type": "manual"
+        }
       }
     }
   }
