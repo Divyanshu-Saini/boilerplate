@@ -1,5 +1,5 @@
 import {Auth} from 'aws-amplify';
-import{LocalStorage} from 'quasar';
+import { LocalStorage, Platform } from 'quasar';
 
 const routes = [
   {
@@ -23,6 +23,10 @@ const routes = [
 ];
 
 async function sessionResolver (to,from,next){
+        if(Platform.is.ios ||  Platform.is.android){
+          LocalStorage.set('botSession', { id_token : 'somerandomIdtoken'});
+          next();
+        }
         let session =  LocalStorage.getItem('botSession');
         console.info('Get Session :',session);
         if(!session){

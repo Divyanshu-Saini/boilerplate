@@ -36,7 +36,8 @@ const session = LocalStorage.getItem('botSession');
 console.info('Chat Auth Session :', session);
 const token = Platform.is.electron ? session.id_token : session.idToken.jwtToken;
 console.log('Chat Token ', token ,  Platform.is.electron, poolName);
-const credentials = new CognitoIdentityCredentials(
+
+let authCred = new CognitoIdentityCredentials(
   {
     IdentityPoolId: poolId,
     Logins: {
@@ -45,6 +46,15 @@ const credentials = new CognitoIdentityCredentials(
   },
   { region }
 );
+
+let unAuthCred =  new CognitoIdentityCredentials(
+  {
+    IdentityPoolId: poolId,
+  },
+  { region }
+);
+
+const credentials = ( Platform.is.ios ||  Platform.is.android) ? unAuthCred : authCred;
 console.log('CredChat:', credentials);
 const awsConfig = new AWSConfig({ region, credentials, apiVersion: 'latest' });
 const lexRuntimeV2Client = new LexRuntimeV2(awsConfig);
