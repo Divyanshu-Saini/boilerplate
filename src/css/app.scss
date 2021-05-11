@@ -23,3 +23,25 @@ html,body{
     background-color: #ffffff  !important;
     overflow-y: hidden !important;
 }
+
+::-webkit-scrollbar {
+  width: 05px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 2px grey; 
+  border-radius: 05
+  px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: grey; 
+  border-radius: 05px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #1468b2; 
+}
