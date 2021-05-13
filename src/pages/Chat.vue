@@ -61,6 +61,12 @@ const awsConfig = new AWSConfig({ region, credentials, apiVersion: 'latest' });
 const lexRuntimeV2Client = new LexRuntimeV2(awsConfig);
 const pollyClient = new Polly(awsConfig);
 
+let sessionObject =  JSON.parse(LocalStorage.getItem('vuex'));
+const sessionAttributes = {
+  chatUserId:sessionObject.global.user.chatUserId,
+  upn:sessionObject.global.user.upn
+}
+
 const config = {
   cognito: { poolId },
   lex: {
@@ -73,17 +79,14 @@ const config = {
     v2BotAliasId:  process.env.V2_BOT_ALIAS_ID,
     v2BotLocaleId:  process.env.V2_BOT_LOCALE_ID,
     initialText: '',
-    initialSpeechInstruction: ''
+    initialSpeechInstruction: '',
+    sessionAttributes,
   },
   ui: {
     showHeader: false,
-    toolbarTitle: 'Chat with Eva',
-    toolbarLogo: '',
     positiveFeedbackIntent: 'Thumbs up',
     negativeFeedbackIntent: 'Thumbs down',
     helpIntent: 'Help',
-    enableLogin: false,
-    forceLogin: false,
     AllowSuperDangerousHTMLInMessage: true,
     shouldDisplayResponseCardTitle: false,
     saveHistory: true,
@@ -142,6 +145,7 @@ export default {
           this.setSession(putParams);
           this.getInitialResponse({ ...params, text: 'InitMsg' });
         }
+        console.info('Existing Session :', data);
         const putParams = {
           sessionState: {},
           ...params,
@@ -166,6 +170,7 @@ export default {
           console.error('Error in RecogniseText :', err);
           return;
         }
+        console.info('Initialresponse :',res);
         if (res.sessionState) {
           // this is v2 response
           res.sessionAttributes = res.sessionState.sessionAttributes;
