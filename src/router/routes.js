@@ -1,3 +1,4 @@
+import { IPC_MESSAGES } from 'app/constant';
 import {Auth} from 'aws-amplify';
 import { LocalStorage, Platform } from 'quasar';
 

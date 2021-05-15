@@ -18,8 +18,8 @@ const awsmobile = {
   aws_user_files_s3_bucket: 'devfbvacorestorage150024-dev',
   aws_user_files_s3_bucket_region: 'us-east-1',
   aws_appsync_graphqlEndpoint: 'https://njm5qnfjjvbbjnglo2jrdsny5u.appsync-api.us-east-1.amazonaws.com/graphql',
-    "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-g2vjo6dvhrb2nfjglkhv2bb5qi"
+  aws_appsync_authenticationType: 'API_KEY',
+  aws_appsync_apiKey: 'da2-g2vjo6dvhrb2nfjglkhv2bb5qi'
 };
 
 const awsIos = {
@@ -39,8 +39,8 @@ const awsIos = {
   aws_user_files_s3_bucket: 'devfbvacorestorage150024-dev',
   aws_user_files_s3_bucket_region: 'us-east-1',
   aws_appsync_graphqlEndpoint: 'https://njm5qnfjjvbbjnglo2jrdsny5u.appsync-api.us-east-1.amazonaws.com/graphql',
-    "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-g2vjo6dvhrb2nfjglkhv2bb5qi"
+  aws_appsync_authenticationType: 'API_KEY',
+  aws_appsync_apiKey: 'da2-g2vjo6dvhrb2nfjglkhv2bb5qi'
 };
 
 const awsAndroid = {
@@ -60,8 +60,8 @@ const awsAndroid = {
   aws_user_files_s3_bucket: 'devfbvacorestorage150024-dev',
   aws_user_files_s3_bucket_region: 'us-east-1',
   aws_appsync_graphqlEndpoint: 'https://njm5qnfjjvbbjnglo2jrdsny5u.appsync-api.us-east-1.amazonaws.com/graphql',
-    "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-g2vjo6dvhrb2nfjglkhv2bb5qi"
+  aws_appsync_authenticationType: 'API_KEY',
+  aws_appsync_apiKey: 'da2-g2vjo6dvhrb2nfjglkhv2bb5qi'
 };
 
 const awsWeb = {
@@ -73,16 +73,16 @@ const awsWeb = {
   oauth: {
     domain: 'fbvacore-dev.auth.us-east-1.amazoncognito.com',
     scope: ['email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
-    redirectSignIn: "https://dev.d17tn2tjvjpqrl.amplifyapp.com/",
-    redirectSignOut: "https://dev.d17tn2tjvjpqrl.amplifyapp.com/",
+    redirectSignIn: 'https://dev.d17tn2tjvjpqrl.amplifyapp.com/',
+    redirectSignOut: 'https://dev.d17tn2tjvjpqrl.amplifyapp.com/',
     responseType: 'code'
   },
   federationTarget: 'COGNITO_USER_POOLS',
   aws_user_files_s3_bucket: 'devfbvacorestorage150024-dev',
   aws_user_files_s3_bucket_region: 'us-east-1',
   aws_appsync_graphqlEndpoint: 'https://njm5qnfjjvbbjnglo2jrdsny5u.appsync-api.us-east-1.amazonaws.com/graphql',
-    "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-g2vjo6dvhrb2nfjglkhv2bb5qi"
+  aws_appsync_authenticationType: 'API_KEY',
+  aws_appsync_apiKey: 'da2-g2vjo6dvhrb2nfjglkhv2bb5qi'
 };
 
 const awsDesktop = {
@@ -102,8 +102,8 @@ const awsDesktop = {
   aws_user_files_s3_bucket: 'devfbvacorestorage150024-dev',
   aws_user_files_s3_bucket_region: 'us-east-1',
   aws_appsync_graphqlEndpoint: 'https://njm5qnfjjvbbjnglo2jrdsny5u.appsync-api.us-east-1.amazonaws.com/graphql',
-    "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-g2vjo6dvhrb2nfjglkhv2bb5qi"
+  aws_appsync_authenticationType: 'API_KEY',
+  aws_appsync_apiKey: 'da2-g2vjo6dvhrb2nfjglkhv2bb5qi'
 };
 
 export default { awsmobile, awsIos, awsAndroid, awsWeb, awsDesktop };
