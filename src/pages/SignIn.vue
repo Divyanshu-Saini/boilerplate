@@ -32,6 +32,7 @@
 <script>
 import { Auth, Hub, Amplify } from 'aws-amplify';
 import { Loading, Platform } from 'quasar';
+import { IPC_MESSAGES } from 'app/constant';
 
 export default {
   name: 'SignIn',
@@ -50,6 +51,7 @@ export default {
       console.log(userInfo);
       console.log('Token ', tokens);
       this.$q.localStorage.set('botSession', tokens);
+      this.$q.electron.ipcRenderer.invoke(IPC_MESSAGES.STORE_SESSION, tokens);
       const tokenData = {
         token: tokens.id_token,
         expires_at: tokens.expires_in * 1000 + new Date().getTime()

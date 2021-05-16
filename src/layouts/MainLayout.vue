@@ -79,6 +79,7 @@ import { Loading } from 'quasar';
 import { mapActions } from 'vuex';
 
 import * as subscriptions from '../graphql/subscriptions';
+import { IPC_MESSAGES } from 'app/constant';
 
 //import { remote } from 'electron';
 //import axios from 'axios';
@@ -227,6 +228,10 @@ export default {
           console.log(error);
         })
         .finally(() => {
+          if (this.$q.platform.is.electron) {
+            const vuex = JSON.parse(this.$q.localStorage.getItem('vuex'));
+            this.$q.electron.ipcRenderer.invoke(IPC_MESSAGES.STORE_USER, vuex.global.user);
+          }
           Loading.hide();
         });
     },
@@ -236,6 +241,9 @@ export default {
       });
       Auth.signOut({ global: true });
       this.$q.localStorage.clear();
+      if (this.$q.platform.is.electron) {
+        this.$q.electron.ipcRenderer.send(IPC_MESSAGES.CLEAR_STORAGE);
+      }
     },
     clearUserInfo(eventType, shouldRedirectToSignIn) {
       this.$store.commit('global/setUser', {
