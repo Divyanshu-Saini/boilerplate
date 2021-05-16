@@ -50,7 +50,16 @@
             <q-item-label v-html="this.$store.state.global.bot.name"></q-item-label>
             <q-item-label overline>Your Digital Buddy!</q-item-label>
             <q-item-label caption lines="1">
-              <q-btn key="Personalize" align="left" color="warning" outline no-caps size="sm" label="Personalize"  @click="personalise()"/>
+              <q-btn
+                key="Personalize"
+                align="left"
+                color="warning"
+                outline
+                no-caps
+                size="sm"
+                label="Personalize"
+                @click="personalise()"
+              />
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -67,7 +76,7 @@
 import EssentialLink from 'components/EssentialLink.vue';
 import { Auth, Hub, API, graphqlOperation } from 'aws-amplify';
 import { Loading } from 'quasar';
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 
 import * as subscriptions from '../graphql/subscriptions';
 
@@ -106,9 +115,9 @@ export default {
       leftDrawerOpen: false,
       essentialLinks: linksData,
       notificationUSubscription: undefined,
-      notificationCSubscription:undefined,
-      personaliseCSubscription:undefined,
-      personaliseUSubscription:undefined,
+      notificationCSubscription: undefined,
+      personaliseCSubscription: undefined,
+      personaliseUSubscription: undefined
     };
   },
   created() {
@@ -120,23 +129,29 @@ export default {
     Hub.listen('auth', this.handleAuthEvents);
   },
   methods: {
-      ...mapActions("notification", ["setNotification","pushNotification"]),
-    showNotif (position,message) {
+    ...mapActions('notification', ['setNotification', 'pushNotification']),
+    showNotif(position, message) {
       this.$q.notify({
         message,
         position,
-        actions:  [
-            { label: 'Dismiss', color: 'yellow', handler: () => { /* console.log('wooow') */ } }
-          ],
+        actions: [
+          {
+            label: 'Dismiss',
+            color: 'yellow',
+            handler: () => {
+              /* console.log('wooow') */
+            }
+          }
+        ],
         timeout: Math.random() * 5000 + 3000
-      })
+      });
     },
     personalise() {
       const message = {
-        type: "human",
-        text: "Personalise",
+        type: 'human',
+        text: 'Personalise'
       };
-      this.$store.dispatch("postTextMessage", message);
+      this.$store.dispatch('postTextMessage', message);
     },
     handleAuthEvents(data) {
       switch (data.payload.event) {
@@ -197,12 +212,12 @@ export default {
               userInfo.attributes == undefined
                 ? userInfo['custom:ldsobjectGUID']
                 : userInfo.attributes['custom:ldsobjectGUID'],
-            photoUrl: 'https://dev.d17tn2tjvjpqrl.amplifyapp.com/images/person_48.png',
-            identityId:credential.identityId        
+            photoUrl: 'images/person_48.png',
+            identityId: credential.identityId
           });
           if (shouldRedirectToHome) {
             if (this.$q.platform.is.electron) {
-              this.$router.push({name:'home'});
+              this.$router.push({ name: 'home' });
             } else {
               this.$router.go('/');
             }
@@ -233,75 +248,67 @@ export default {
         email: '',
         upn: '',
         chatUserId: '',
-        photoUrl: 'https://dev.d17tn2tjvjpqrl.amplifyapp.com/images/person_48.png'
+        photoUrl: 'images/person_48.png'
       });
       Loading.hide();
       if (shouldRedirectToSignIn) {
         if (this.$q.platform.is.electron) {
-          this.$router.push({ name: 'signin'});
+          this.$router.push({ name: 'signin' });
         } else {
           this.$router.go('/signin');
         }
       }
     },
-     subscribeToNotifications() {
-      this.notificationUSubscription = API.graphql(
-        graphqlOperation(subscriptions.onUpdateNotifications)
-      ).subscribe({
+    subscribeToNotifications() {
+      this.notificationUSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateNotifications)).subscribe({
         next: ({ provider, value }) => {
           console.log({ provider, value });
           let target = JSON.parse(value.data.onUpdateNotifications.Targets);
-          for(const t of target)
-          if(t.id == this.$store.state.global.user.email){
-             this.showNotif('top',value.data.onUpdateNotifications.Message);
-          }
+          for (const t of target)
+            if (t.id == this.$store.state.global.user.email) {
+              this.showNotif('top', value.data.onUpdateNotifications.Message);
+            }
         },
-        error: (error) => console.warn(error),
+        error: (error) => console.warn(error)
       });
-      this.notificationCSubscription = API.graphql(
-        graphqlOperation(subscriptions.onCreateNotifications)
-      ).subscribe({
+      this.notificationCSubscription = API.graphql(graphqlOperation(subscriptions.onCreateNotifications)).subscribe({
         next: ({ provider, value }) => {
           console.log({ provider, value });
           let target = JSON.parse(value.data.onCreateNotifications.Targets);
-          for(const t of target)
-          if(t.id == this.$store.state.global.user.email){
-             this.showNotif('top',value.data.onCreateNotifications.Message);
-          }
+          for (const t of target)
+            if (t.id == this.$store.state.global.user.email) {
+              this.showNotif('top', value.data.onCreateNotifications.Message);
+            }
         },
-        error: (error) => console.warn(error),
+        error: (error) => console.warn(error)
       });
     },
     subscribeToPersonalise() {
-      this.personaliseUSubscription = API.graphql(
-        graphqlOperation(subscriptions.onUpdatePersonalize)
-      ).subscribe({
+      this.personaliseUSubscription = API.graphql(graphqlOperation(subscriptions.onUpdatePersonalize)).subscribe({
         next: ({ provider, value }) => {
           console.log({ provider, value });
-          if(value.data.onUpdatePersonalize.userId == this.$store.state.global.user.email){
-            let perObj= {
-                name:value.data.onUpdatePersonalize.botName,
-                avatarUrl:value.data.onUpdatePersonalize.avatarUrl
-             }
-             this.$store.commit('global/setBot', perObj);
+          if (value.data.onUpdatePersonalize.userId == this.$store.state.global.user.email) {
+            let perObj = {
+              name: value.data.onUpdatePersonalize.botName,
+              avatarUrl: value.data.onUpdatePersonalize.avatarUrl
+            };
+            this.$store.commit('global/setBot', perObj);
           }
         },
-        error: (error) => console.warn(error),
+        error: (error) => console.warn(error)
       });
-      this.personaliseCSubscription = API.graphql(
-        graphqlOperation(subscriptions.onCreatePersonalize)
-      ).subscribe({
+      this.personaliseCSubscription = API.graphql(graphqlOperation(subscriptions.onCreatePersonalize)).subscribe({
         next: ({ provider, value }) => {
           console.log({ provider, value });
-          if(value.data.onCreatePersonalize.userId == this.$store.state.global.user.email){
-             let perObj= {
-                name:value.data.onCreatePersonalize.botName,
-                avatarUrl:value.data.onCreatePersonalize.avatarUrl
-             }
-             this.$store.commit('global/setBot', perObj);
+          if (value.data.onCreatePersonalize.userId == this.$store.state.global.user.email) {
+            let perObj = {
+              name: value.data.onCreatePersonalize.botName,
+              avatarUrl: value.data.onCreatePersonalize.avatarUrl
+            };
+            this.$store.commit('global/setBot', perObj);
           }
         },
-        error: (error) => console.warn(error),
+        error: (error) => console.warn(error)
       });
     }
   }

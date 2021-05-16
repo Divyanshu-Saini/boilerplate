@@ -1,5 +1,5 @@
 import { app, BrowserWindow, nativeTheme, Tray, nativeImage, Menu } from 'electron';
-import  path from 'path';
+import path from 'path';
 
 try {
   if (process.platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
@@ -16,7 +16,7 @@ if (process.env.PROD) {
 }
 
 let mainWindow;
-const image = nativeImage.createFromPath(path.join(__dirname, '../icons/icon.ico'));
+const image = nativeImage.createFromPath(path.join(__statics, '../icons/icon.ico'));
 
 function createWindow() {
   /**
@@ -41,16 +41,14 @@ function createWindow() {
 
   mainWindow.loadURL(process.env.APP_URL);
   mainWindow.setMenuBarVisibility(false);
-      mainWindow.tray = new Tray(image);
-    const menu = Menu.buildFromTemplate([
-        {role: "quit"}, 
-    ]);
-    mainWindow.tray.setToolTip("For Better Virtual Assistance");
-    mainWindow.tray.setContextMenu(menu);
-    mainWindow.tray.on('click',()=>{
-      mainWindow.isVisible()? mainWindow.hide() : mainWindow.show();
-    })
-    mainWindow.on('closed', () => {
+  mainWindow.tray = new Tray(image);
+  const menu = Menu.buildFromTemplate([{ role: 'quit' }]);
+  mainWindow.tray.setToolTip('For Better Virtual Assistance');
+  mainWindow.tray.setContextMenu(menu);
+  mainWindow.tray.on('click', () => {
+    mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+  });
+  mainWindow.on('closed', () => {
     mainWindow = null;
   });
 }
