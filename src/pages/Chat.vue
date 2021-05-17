@@ -147,7 +147,7 @@ export default {
             sessionState: {}
           };
           this.setSession(putParams);
-          this.getInitialResponse({ ...params, text: 'InitMsg' });
+          this.getInitialResponse({ ...params, text: 'InitMsg', sessionState: { sessionAttributes } });
         }
         const putParams = {
           sessionState: {},
