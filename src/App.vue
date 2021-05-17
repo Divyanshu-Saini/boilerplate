@@ -16,11 +16,11 @@ export default {
       this.$q.electron.ipcRenderer.send(IPC_MESSAGES.RESTORE_SESSION);
       this.$q.electron.ipcRenderer.on(IPC_MESSAGES.RESTORE_SESSION, (event, args) => {
         console.log('Args ...', args, this.$_.isEmpty(args));
-        if (!this.$_.isEmpty(args)) {
-          const { user } = args;
-          this.$store.commit('global/setUser', user);
-          this.$router.push({ name: 'home' });
-        }
+        // if (!this.$_.isEmpty(args)) {
+        //   const { user } = args;
+        //   this.$store.commit('global/setUser', user);
+        //   this.$router.push({ name: 'home' });
+        // }
       });
     }
   }

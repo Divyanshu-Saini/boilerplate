@@ -66,6 +66,7 @@ export default {
         tokenData,
         userInfo
       );
+      console.log('Electron sign :', credentials);
     },
     async signIn() {
       Loading.show({
