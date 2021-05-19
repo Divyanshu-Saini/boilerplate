@@ -132,21 +132,17 @@ export default {
   methods: {
     ...mapActions('notification', ['setNotification', 'pushNotification']),
 
-    showNotif(position, message) {
-      this.$q.notify({
-        message,
+    showNotif(position, args={}) {
+      const notifyArgs ={
+        message :args.message,
         position,
-        actions: [
-          {
-            label: 'Dismiss',
-            color: 'yellow',
-            handler: () => {
-              /* console.log('wooow') */
-            }
-          }
-        ],
-        timeout: Math.random() * 5000 + 3000
-      });
+        multiLine:true,
+        timeout: Math.random() * 10000 + 10000
+      };
+      if( args.type === 'Cowin-Status'){
+        notifyArgs.actions = args.actions
+      }
+      this.$q.notify(notifyArgs);
     },
 
     personalise() {
@@ -280,9 +276,30 @@ export default {
         next: ({ provider, value }) => {
           console.log({ provider, value });
           let target = JSON.parse(value.data.onUpdateNotifications.Targets);
+          let actions = value.data.onUpdateNotifications.Actions ? JSON.parse(value.data.onUpdateNotifications.Actions) :null;
           for (const t of target)
             if (t.id == this.$store.state.global.user.email) {
-              this.showNotif('top', value.data.onUpdateNotifications.Message);
+              const args = {message:value.data.onUpdateNotifications.Message};
+              if(value.data.onUpdateNotifications.Subject === 'Cowin-Status'){
+                args.type = 'Cowin-Status';
+                args.multiLine=true;
+                if(actions && actions.length > 0){
+                  console.log(actions);
+                  args.actions= [ ];
+                  for(const a of actions){
+                    const action = {
+                      label:a.label, 
+                      color: 'blue', 
+                      handler: () => { 
+                      const message = {type: 'human',text: a.message};
+                      this.$store.dispatch('postTextMessage', message);
+                      }
+                    };
+                     args.actions.push(action)
+                  }
+                }
+              }
+              this.showNotif('top', args);
             }
         },
         error: (error) => console.warn(error)
@@ -291,9 +308,30 @@ export default {
         next: ({ provider, value }) => {
           console.log({ provider, value });
           let target = JSON.parse(value.data.onCreateNotifications.Targets);
+          let actions = value.data.onCreateNotifications.Actions ? JSON.parse(value.data.onCreateNotifications.Actions) :null;
           for (const t of target)
             if (t.id == this.$store.state.global.user.email) {
-              this.showNotif('top', value.data.onCreateNotifications.Message);
+              const args = {message:value.data.onCreateNotifications.Message};
+              if(value.data.onCreateNotifications.Subject === 'Cowin-Status'){
+                args.type = 'Cowin-Status';
+                args.multiLine=true;
+                if(actions && actions.length > 0){
+                  console.log(actions);
+                  args.actions= [ ];
+                  for(const a of actions){
+                    const action = {
+                      label:a.label, 
+                      color: 'blue', 
+                      handler: () => { 
+                      const message = {type: 'human',text: a.message};
+                      this.$store.dispatch('postTextMessage', message);
+                      }
+                    };
+                     args.actions.push(action)
+                  }
+                }
+              }
+              this.showNotif('top', args);
             }
         },
         error: (error) => console.warn(error)

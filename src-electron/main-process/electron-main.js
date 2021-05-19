@@ -19,7 +19,7 @@ if (process.env.PROD) {
 }
 
 let mainWindow;
-const image = nativeImage.createFromPath(path.join(__statics, '../icons/icon.ico'));
+const image = nativeImage.createFromPath(path.join(__dirname, '../icons/icon.ico'));
 
 function createWindow() {
   /**

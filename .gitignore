@@ -53,3 +53,5 @@ amplifytools.xcconfig
 .secret-*
 
 package-lock.json
+
+temp.js
