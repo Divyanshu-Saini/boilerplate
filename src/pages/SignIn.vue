@@ -5,7 +5,7 @@
         <q-avatar size="32px">
           <q-img src="images/logo_64.png"></q-img>
         </q-avatar>
-        For Better Virtual Assistant
+        ForBetter
       </q-chip>
 
       <div class="text-h5" style="opacity: 0.9">Sign in required</div>

@@ -14,7 +14,7 @@ export default function () {
       identityId: ''
     },
     bot: {
-      name: 'For Better Virtual Assistant',
+      name: 'ForBetter',
       avatarUrl: 'images/logo_48.png'
     }
   };

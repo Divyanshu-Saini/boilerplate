@@ -7,26 +7,6 @@
           <img :src="this.$store.state.global.bot.avatarUrl" />
         </q-avatar>
         <q-toolbar-title v-html="this.$store.state.global.bot.name"> </q-toolbar-title>
-
-        <q-chip clickable square color="white" outline>
-          <q-avatar size="24px" color="warning">
-            <img :src="this.$store.state.global.user.photoUrl" />
-          </q-avatar>
-          <span v-html="this.$store.state.global.user.name"></span>
-          <q-menu auto-close fit transition-show="scale" transition-hide="scale">
-            <q-list>
-              <q-item clickable v-if="!this.$store.state.global.user.isSignedIn" v-close-popup @click="signIn()">
-                <q-item-section>Sign In</q-item-section>
-              </q-item>
-              <q-item clickable v-if="this.$store.state.global.user.isSignedIn" v-close-popup @click="personalise()">
-                <q-item-section>Personalize</q-item-section>
-              </q-item>
-              <q-item clickable v-if="this.$store.state.global.user.isSignedIn" v-close-popup @click="signOut()">
-                <q-item-section>Sign Out</q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-chip>
       </q-toolbar>
     </q-header>
 
@@ -35,20 +15,23 @@
         <q-list>
           <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
         </q-list>
+        <q-list style="height: calc(100% - 50px); margin-top: 260px;">
+          <q-btn flat dense round icon="power_settings_new" aria-label="power_settings_new" color="accent" @click="signOut()" />
+          <label>Version: {{appVersion}}</label>
+        </q-list>
       </q-scroll-area>
       <q-list class="absolute-top" style="border-bottom: 1px solid #ddd">
         <q-item v-ripple style="padding: 0 0 20px 0; border-right: 1px solid #ddd">
           <q-img contain position="0 0" height="60px" src="images/wv_top_small.png"> </q-img>
         </q-item>
-        <q-item v-ripple style="padding: 0 0 20px 0; border-right: 1px solid #ddd">
+        <q-item v-ripple style="padding: 0 0 20px 18px; border-right: 1px solid #ddd">
           <q-item-section side>
-            <q-avatar rounded size="48px">
-              <img :src="this.$store.state.global.bot.avatarUrl" />
+            <q-avatar size="38px" color="warning">
+              <img :src="this.$store.state.global.user.photoUrl" />
             </q-avatar>
           </q-item-section>
           <q-item-section>
-            <q-item-label v-html="this.$store.state.global.bot.name"></q-item-label>
-            <q-item-label overline>Your Digital Buddy!</q-item-label>
+            <q-item-label v-html="this.$store.state.global.user.name"></q-item-label>
             <q-item-label caption lines="1">
               <q-btn
                 key="Personalize"
@@ -76,13 +59,16 @@
 import EssentialLink from 'components/EssentialLink.vue';
 import { Auth, Hub, API, graphqlOperation } from 'aws-amplify';
 import { Loading } from 'quasar';
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
+import { version } from '../../package';
+import { LocalStorage } from 'quasar';
 
 import * as subscriptions from '../graphql/subscriptions';
 import { IPC_MESSAGES } from 'app/constant';
 
 //import { remote } from 'electron';
 //import axios from 'axios';
+LocalStorage.set('appVersion', version);
 
 const linksData = [
   {
@@ -105,6 +91,13 @@ const linksData = [
     icon: 'settings',
     link: 'settings',
     color: 'secondary'
+  },
+  {
+    title: 'Feedback',
+    caption: 'Feel free to write your review',
+    icon: 'feedback',
+    link: 'feedback',
+    color: 'warning'
   }
 ];
 
@@ -116,9 +109,10 @@ export default {
       leftDrawerOpen: false,
       essentialLinks: linksData,
       notificationUSubscription: undefined,
-      notificationCSubscription: undefined,
-      personaliseCSubscription: undefined,
-      personaliseUSubscription: undefined
+      notificationCSubscription:undefined,
+      personaliseCSubscription:undefined,
+      personaliseUSubscription:undefined,
+      appVersion:version
     };
   },
   created() {
