@@ -32,7 +32,6 @@
 </template>
 
 <script>
-
 export default {
     name: 'FeedbackForm',
     data: function () {
@@ -81,6 +80,17 @@ export default {
               color: 'positive',
               message: 'Your feedback is submitted. Thanks!'
             })
+
+            let param = {
+                body: this.description,
+                subject: "Feedback for "+this.areaModel.label
+            }
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+                body: JSON.stringify(param)
+            };
+            fetch("https://tcplsmtp.azurewebsites.net/mail/send", requestOptions)
           }
         }
     }
