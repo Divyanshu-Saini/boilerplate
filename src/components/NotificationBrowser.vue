@@ -9,15 +9,30 @@
       :filter="filter"
       :sort-method="customSort"
       :fullscreen.sync="isFullscreen"
+       no-data-label="I didn't find any notification for you"
       virtual-scroll
       binary-state-sort
-    >
-      <template v-slot:top-right>
+      class = "full-height bg-green-12"  
+      separator="vertical"
+    >   
+      <template v-slot:top-right >
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>
             <q-icon name="search" />
           </template>
         </q-input>
+      </template>
+       <template v-slot:header="props">
+        <q-tr :props="props">
+          <q-th
+            v-for="col in props.cols"
+            :key="col.name"
+            :props="props"
+            class="text-bold"
+          >
+            {{ col.label }}
+          </q-th>
+        </q-tr>
       </template>
     </q-table>
   </div>
@@ -37,14 +52,20 @@ export default {
           required: true,
           label: 'Subject',
           align: 'left',
+          classes: 'bg-grey-2 ellipsis',
+          headerClasses: 'bg-primary text-white',
           field: (row) => row.Subject,
           format: (val) => `${val}`,
           sortable: true,
         },
-        { name: 'Message', align: 'center', label: 'Description', field: 'Message', sortable: true },
-        { name: 'Priority', label: 'Priority', field: 'Priority', sortable: true },
-        { name: 'Status', label: 'Status', field: 'Status', sortable: true },
-        { name: 'ExpiresOn', label: 'Expire Date/Time', field: 'ExpiresOn', format:(val)=>this.$options.filters.formatDate(val),sortable: true },
+        { name: 'Message', align: 'center', label: 'Description', field: 'Message', classes: 'bg-grey-2 ellipsis',
+          headerClasses: 'bg-primary text-white', sortable: true },
+        { name: 'Priority', label: 'Priority', field: 'Priority',  classes: 'bg-grey-2 ellipsis',
+          headerClasses: 'bg-primary text-white',sortable: true },
+        { name: 'Status', label: 'Status', field: 'Status',  classes: 'bg-grey-2 ellipsis',
+          headerClasses: 'bg-primary text-white',sortable: true },
+        { name: 'ExpiresOn', label: 'Expire Date/Time', field: 'ExpiresOn',  classes: 'bg-grey-2 ellipsis',
+          headerClasses: 'bg-primary text-white',format:(val)=>this.$options.filters.formatDate(val),sortable: true , sortOrder: 'da'},
       ]
     }
   },
