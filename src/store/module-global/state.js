@@ -10,12 +10,12 @@ export default function () {
       email: '',
       upn: '',
       chatUserId: '',
-      photoUrl: 'https://dev.d17tn2tjvjpqrl.amplifyapp.com/images/person_48.png',
+      photoUrl: 'images/person_48.png',
       identityId: ''
     },
     bot: {
       name: 'ForBetter',
-      avatarUrl: 'https://dev.d17tn2tjvjpqrl.amplifyapp.com/images/logo_48.png'
+      avatarUrl: 'images/logo_48.png'
     }
   };
 }

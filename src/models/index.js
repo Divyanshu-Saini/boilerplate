@@ -2,11 +2,10 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
-
-
-const { Channel, Personalize, Notifications } = initSchema(schema);
+const { CoWINRequest, Channel, Personalize, Notifications } = initSchema(schema);
 
 export {
+  CoWINRequest,
   Channel,
   Personalize,
   Notifications

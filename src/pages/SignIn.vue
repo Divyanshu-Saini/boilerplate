@@ -3,7 +3,7 @@
     <div>
       <q-chip size="24px">
         <q-avatar size="32px">
-          <q-img src="https://dev.d17tn2tjvjpqrl.amplifyapp.com/images/logo_64.png"></q-img>
+          <q-img src="images/logo_64.png"></q-img>
         </q-avatar>
         ForBetter
       </q-chip>
@@ -32,6 +32,7 @@
 <script>
 import { Auth, Hub, Amplify } from 'aws-amplify';
 import { Loading, Platform } from 'quasar';
+import { IPC_MESSAGES } from 'app/constant';
 
 export default {
   name: 'SignIn',
@@ -50,6 +51,7 @@ export default {
       console.log(userInfo);
       console.log('Token ', tokens);
       this.$q.localStorage.set('botSession', tokens);
+      this.$q.electron.ipcRenderer.invoke(IPC_MESSAGES.STORE_SESSION, tokens);
       const tokenData = {
         token: tokens.id_token,
         expires_at: tokens.expires_in * 1000 + new Date().getTime()
@@ -64,6 +66,7 @@ export default {
         tokenData,
         userInfo
       );
+      console.log('Electron sign :', credentials);
     },
     async signIn() {
       Loading.show({
@@ -82,7 +85,7 @@ export default {
         const authWindow = new electron.remote.BrowserWindow({
           width: 500,
           height: 600,
-          frame:false,
+          frame: false,
           show: true
         });
 

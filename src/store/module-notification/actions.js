@@ -2,7 +2,7 @@ import { DataStore } from 'aws-amplify';
 import { Notifications } from '../../models';
 
 export async function setNotification(context) {
-   context.dispatch('resetNotification');
+  context.dispatch('resetNotification');
   const notification = await DataStore.query(Notifications);
   console.log('In Notification Store :', notification);
   notification.map((ele) => {

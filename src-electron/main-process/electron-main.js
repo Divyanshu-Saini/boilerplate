@@ -1,5 +1,8 @@
-import { app, BrowserWindow, nativeTheme, Tray, nativeImage, Menu } from 'electron';
-import  path from 'path';
+import { app, BrowserWindow, nativeTheme, Tray, nativeImage, Menu, ipcMain } from 'electron';
+import path from 'path';
+
+import { storeUser, storeSession, electron_store } from './ipc-handler';
+import { IPC_MESSAGES } from '../../constant';
 
 try {
   if (process.platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
@@ -41,21 +44,45 @@ function createWindow() {
 
   mainWindow.loadURL(process.env.APP_URL);
   mainWindow.setMenuBarVisibility(false);
-      mainWindow.tray = new Tray(image);
-    const menu = Menu.buildFromTemplate([
-        {role: "quit"}, 
-    ]);
-    mainWindow.tray.setToolTip("For Better Virtual Assistance");
-    mainWindow.tray.setContextMenu(menu);
-    mainWindow.tray.on('click',()=>{
-      mainWindow.isVisible()? mainWindow.hide() : mainWindow.show();
-    })
-    mainWindow.on('closed', () => {
+  mainWindow.tray = new Tray(image);
+  const menu = Menu.buildFromTemplate([{ role: 'quit' }]);
+  mainWindow.tray.setToolTip('For Better Virtual Assistance');
+  mainWindow.tray.setContextMenu(menu);
+  mainWindow.tray.on('click', () => {
+    mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+  });
+  mainWindow.on('closed', () => {
     mainWindow = null;
   });
 }
 
-app.on('ready', createWindow);
+function publish(message, payload = {}) {
+  mainWindow.webContents.send(message, payload);
+}
+
+function resisterSubscription() {
+  ipcMain.handle(IPC_MESSAGES.STORE_SESSION, storeSession);
+  ipcMain.handle(IPC_MESSAGES.STORE_USER, storeUser);
+  ipcMain.on(IPC_MESSAGES.RESTORE_SESSION, () => {
+    let sess = electron_store.get('botSession');
+    let user = electron_store.get('user');
+    if ((user && user !== undefined) || user !== null) {
+      const args = {
+        users: user,
+        botSession: sess
+      };
+      publish(IPC_MESSAGES.RESTORE_SESSION, args);
+    }
+  });
+  ipcMain.on(IPC_MESSAGES.CLEAR_STORAGE, () => {
+    electron_store.clear();
+  });
+}
+
+app.on('ready', () => {
+  resisterSubscription();
+  createWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

@@ -35,7 +35,7 @@ const poolName = `cognito-idp.${region}.amazonaws.com/${process.env.USER_POOL_ID
 const session = LocalStorage.getItem('botSession');
 console.info('Chat Auth Session :', session);
 const token = Platform.is.electron ? session.id_token : session.idToken.jwtToken;
-console.log('Chat Token ', token ,  Platform.is.electron, poolName);
+console.log('Chat Token ', token, Platform.is.electron, poolName);
 
 let authCred = new CognitoIdentityCredentials(
   {
@@ -47,31 +47,39 @@ let authCred = new CognitoIdentityCredentials(
   { region }
 );
 
-let unAuthCred =  new CognitoIdentityCredentials(
+let unAuthCred = new CognitoIdentityCredentials(
   {
-    IdentityPoolId: poolId,
+    IdentityPoolId: poolId
   },
   { region }
 );
 console.log('CredChat auth:', authCred);
 console.log('CredChat unauth:', unAuthCred);
-const credentials = ( Platform.is.ios ||  Platform.is.android ) ? unAuthCred : authCred ;
+const credentials = Platform.is.ios || Platform.is.android ? unAuthCred : authCred;
 console.log('CredChat:', credentials);
 const awsConfig = new AWSConfig({ region, credentials, apiVersion: 'latest' });
 const lexRuntimeV2Client = new LexRuntimeV2(awsConfig);
 const pollyClient = new Polly(awsConfig);
 
+let sessionObject = JSON.parse(LocalStorage.getItem('vuex'));
+const sessionAttributes = {
+  chatUserId: sessionObject.global.user.chatUserId,
+  upn: sessionObject.global.user.upn,
+  email:sessionObject.global.user.email
+};
+
 const config = {
   cognito: { poolId },
   lex: {
+    sessionAttributes,
     botName: 'FBVA_Dev',
     initialUtterance: '',
     reInitSessionAttributesOnRestart: false,
     retryOnLexPostTextTimeout: 'true',
     retryCountPostTextTimeout: '2',
     v2BotId: process.env.V2_BOT_ID,
-    v2BotAliasId:  process.env.V2_BOT_ALIAS_ID,
-    v2BotLocaleId:  process.env.V2_BOT_LOCALE_ID,
+    v2BotAliasId: process.env.V2_BOT_ALIAS_ID,
+    v2BotLocaleId: process.env.V2_BOT_LOCALE_ID,
     initialText: '',
     initialSpeechInstruction: ''
   },
@@ -140,7 +148,7 @@ export default {
             sessionState: {}
           };
           this.setSession(putParams);
-          this.getInitialResponse({ ...params, text: 'InitMsg' });
+          this.getInitialResponse({ ...params, text: 'InitMsg', sessionState: { sessionAttributes } });
         }
         const putParams = {
           sessionState: {},
@@ -265,11 +273,11 @@ export default {
 </script>
 
 <style lang="scss">
-  #lex-web {
-    .message-list-container {
-      position: absolute;
-    }
+#lex-web {
+  .message-list-container {
+    position: absolute;
   }
+}
 .electron,
 .desk {
   #lex-web {

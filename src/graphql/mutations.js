@@ -1,6 +1,69 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createCoWINRequest = /* GraphQL */ `
+  mutation CreateCoWINRequest(
+    $input: CreateCoWINRequestInput!
+    $condition: ModelCoWINRequestConditionInput
+  ) {
+    createCoWINRequest(input: $input, condition: $condition) {
+      id
+      userId
+      sessionId
+      pinCode
+      isNotificationRequired
+      notificationsDisabled
+      notificationsDisabledAt
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateCoWINRequest = /* GraphQL */ `
+  mutation UpdateCoWINRequest(
+    $input: UpdateCoWINRequestInput!
+    $condition: ModelCoWINRequestConditionInput
+  ) {
+    updateCoWINRequest(input: $input, condition: $condition) {
+      id
+      userId
+      sessionId
+      pinCode
+      isNotificationRequired
+      notificationsDisabled
+      notificationsDisabledAt
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteCoWINRequest = /* GraphQL */ `
+  mutation DeleteCoWINRequest(
+    $input: DeleteCoWINRequestInput!
+    $condition: ModelCoWINRequestConditionInput
+  ) {
+    deleteCoWINRequest(input: $input, condition: $condition) {
+      id
+      userId
+      sessionId
+      pinCode
+      isNotificationRequired
+      notificationsDisabled
+      notificationsDisabledAt
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const createChannel = /* GraphQL */ `
   mutation CreateChannel(
     $input: CreateChannelInput!
