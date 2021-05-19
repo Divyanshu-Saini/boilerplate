@@ -14,7 +14,7 @@ export default function () {
       identityId: ''
     },
     bot: {
-      name: 'For Better Virtual Assistant',
+      name: 'ForBetter',
       avatarUrl: 'https://dev.d17tn2tjvjpqrl.amplifyapp.com/images/logo_48.png'
     }
   };
