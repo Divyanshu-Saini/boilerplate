@@ -191,7 +191,9 @@ export default {
     fillUserInfo(eventType, shouldRedirectToHome) {
       Auth.currentAuthenticatedUser({ bypassCache: true })
         .then(async (userInfo) => {
+          console.info('UserINFO :::::::',userInfo);
           let credential = await Auth.currentCredentials();
+          console.info('CREDENTIAL :::::::',credential);
           this.$store.commit('global/setUser', {
             isSignedIn: true,
             lastSignedInState: eventType,

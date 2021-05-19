@@ -62,7 +62,7 @@ export default {
       };
 
       const credentials = await Auth.federatedSignIn(
-        'cognito-idp.us-east-1.amazonaws.com/us-east-1_tGdnURSRx',
+        'cognito-idpap-south-1.amazonaws.com/ap-south-1_xBYbkJ2iV',
         tokenData,
         userInfo
       );
@@ -89,13 +89,13 @@ export default {
           show: true
         });
 
-        const COGNITO_AUTHORIZATION_URL = 'https://fbvacore-dev.auth.us-east-1.amazoncognito.com/oauth2/authorize';
+        const COGNITO_AUTHORIZATION_URL = `${process.env.AUTH_URL}/authorize`;
 
         // TODO: Generate and validate PKCE code_challenge value
         const urlParams = {
           response_type: 'code',
           redirect_uri: 'http://localhost:8080/',
-          client_id: '491cr5u2lvh1j2c1gpk67cmuuq',
+          client_id: process.env.CLIENT_ID,
           scope: 'openid profile email aws.cognito.signin.user.admin'
         };
         const authUrl = `${COGNITO_AUTHORIZATION_URL}?${qs.stringify(urlParams)}`;
@@ -138,12 +138,12 @@ export default {
       });
     },
     async fetchAccessTokens(code, electron, axios, qs, url) {
-      const COGNITO_TOKEN_URL = 'https://fbvacore-dev.auth.us-east-1.amazoncognito.com/oauth2/token';
+      const COGNITO_TOKEN_URL = `${process.env.AUTH_URL}/token`;
       const response = await axios.post(
         COGNITO_TOKEN_URL,
         qs.stringify({
           code,
-          client_id: '491cr5u2lvh1j2c1gpk67cmuuq',
+          client_id: process.env.CLIENT_ID,
           redirect_uri: 'http://localhost:8080/',
           grant_type: 'authorization_code'
         }),
@@ -156,7 +156,7 @@ export default {
       return response.data;
     },
     async fetchProfile(accessToken, electron, axios, qs, url) {
-      const COGNITO_PROFILE_URL = 'https://fbvacore-dev.auth.us-east-1.amazoncognito.com/oauth2/userInfo';
+      const COGNITO_PROFILE_URL = `${process.env.AUTH_URL}/userInfo`;
 
       const response = await axios.get(COGNITO_PROFILE_URL, {
         headers: {
