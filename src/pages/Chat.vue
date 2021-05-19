@@ -55,7 +55,9 @@ let unAuthCred = new CognitoIdentityCredentials(
 );
 console.log('CredChat auth:', authCred);
 console.log('CredChat unauth:', unAuthCred);
-const credentials = Platform.is.ios || Platform.is.android ? unAuthCred : authCred;
+// TODO : use authrole
+// const credentials = Platform.is.ios || Platform.is.android ? unAuthCred : authCred;
+const credentials = unAuthCred;
 console.log('CredChat:', credentials);
 const awsConfig = new AWSConfig({ region, credentials, apiVersion: 'latest' });
 const lexRuntimeV2Client = new LexRuntimeV2(awsConfig);
