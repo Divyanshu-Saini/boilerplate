@@ -29,39 +29,54 @@ import 'material-design-icons/iconfont/material-icons.css';
 import 'nds-aws-lex-web-ui/dist/lex-web-ui.css';
 
 Vue.use(Vuetify);
-const region = process.env.REGION;
-const poolId = process.env.POOL_ID;
-const poolName = `cognito-idp.${region}.amazonaws.com/${process.env.USER_POOL_ID}`;
-const session = LocalStorage.getItem('botSession');
-console.info('Chat Auth Session :', session);
-const token = Platform.is.electron ? session.id_token : session.idToken.jwtToken;
-console.log('Chat Token ', token, Platform.is.electron, poolName);
 
-let authCred = new CognitoIdentityCredentials(
-  {
-    IdentityPoolId: poolId,
-    Logins: {
-      [poolName]: token
-    }
-  },
-  { region }
-);
-
-let unAuthCred = new CognitoIdentityCredentials(
-  {
-    IdentityPoolId: poolId
-  },
-  { region }
-);
-console.log('CredChat auth:', authCred);
-console.log('CredChat unauth:', unAuthCred);
-// TODO : use authrole
-// const credentials = Platform.is.ios || Platform.is.android ? unAuthCred : authCred;
-const credentials = unAuthCred;
-console.log('CredChat:', credentials);
+const poolId = 'us-east-1:b3dfe5d1-9bfc-419d-95c9-116e7aced9f0';
+const region = 'us-east-1';
+const credentials = new CognitoIdentityCredentials({ IdentityPoolId: poolId }, { region });
 const awsConfig = new AWSConfig({ region, credentials, apiVersion: 'latest' });
+
+// const lexRuntimeClient = new AWS.LexRuntimeV2(awsConfig);
+// const store = new Vuex.Store(LexWebUiStore);
 const lexRuntimeV2Client = new LexRuntimeV2(awsConfig);
 const pollyClient = new Polly(awsConfig);
+
+// const region = process.env.REGION;
+// const poolId = process.env.POOL_ID;
+// const poolName = `cognito-idp.${region}.amazonaws.com/${process.env.USER_POOL_ID}`;
+// const session = LocalStorage.getItem('botSession');
+// console.info('Chat Auth Session :', session);
+// const token = Platform.is.electron ? session.id_token : session.idToken.jwtToken;
+// console.log('Chat Token ', token, Platform.is.electron, poolName);
+// AWS.config.region = 'us-east-1'; // Region
+// AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+//     IdentityPoolId: 'us-east-1:b3dfe5d1-9bfc-419d-95c9-116e7aced9f0',
+// });
+
+// let authCred = new CognitoIdentityCredentials(
+//   {
+//     IdentityPoolId: poolId,
+//     Logins: {
+//       [poolName]: token
+//     }
+//   },
+//   { region }
+// );
+
+// let unAuthCred = new CognitoIdentityCredentials(
+//   {
+//     IdentityPoolId: 'us-east-1:b3dfe5d1-9bfc-419d-95c9-116e7aced9f0',
+//   },
+//   { region }
+// );
+// console.log('CredChat auth:', authCred);
+// console.log('CredChat unauth:', unAuthCred);
+// TODO : use authrole
+// const credentials = Platform.is.ios || Platform.is.android ? unAuthCred : authCred;
+// const credentials = unAuthCred;
+// console.log('CredChat:', credentials);
+// const awsConfig = new AWSConfig({ region, unAuthCred });
+// const lexRuntimeV2Client = new LexRuntimeV2(awsConfig);
+// const pollyClient = new Polly(awsConfig);
 
 let sessionObject = JSON.parse(LocalStorage.getItem('vuex'));
 const sessionAttributes = {
@@ -267,7 +282,7 @@ export default {
   },
   async created() {
     if (!this.$_.isEmpty(this.$store.state.global.user.identityId)) {
-      this.initialiseBot(this.$store.state.global.user.identityId);
+      this.initialiseBot('us-east-1:b3dfe5d1-9bfc-419d-95c9-116e7aced9f0');
       this.$data.initialiseLex = true;
     }
   }

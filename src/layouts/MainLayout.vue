@@ -182,61 +182,62 @@ export default {
     },
 
     async signIn() {
-      Loading.show({
-        message: 'I\'m signing you in.<br/><span class="text-orange text-weight-bold">Hang on...</span>'
-      });
+      // Loading.show({
+      //   message: 'I\'m signing you in.<br/><span class="text-orange text-weight-bold">Hang on...</span>'
+      // });
       Auth.federatedSignIn();
     },
 
     fillUserInfo(eventType, shouldRedirectToHome) {
-      Auth.currentAuthenticatedUser({ bypassCache: true })
-        .then(async (userInfo) => {
-          console.info('UserINFO :::::::',userInfo);
-          let credential = await Auth.currentCredentials();
-          console.info('CREDENTIAL :::::::',credential);
-          this.$store.commit('global/setUser', {
-            isSignedIn: true,
-            lastSignedInState: eventType,
-            id: userInfo.attributes == undefined ? userInfo['username'] : userInfo.username,
-            firstName: userInfo.attributes == undefined ? userInfo['given_name'] : userInfo.attributes['given_name'],
-            lastName: userInfo.attributes == undefined ? userInfo['family_name'] : userInfo.attributes['family_name'],
-            name: userInfo.attributes == undefined ? userInfo['name'] : userInfo.attributes['name'],
-            email: userInfo.attributes == undefined ? userInfo['email'] : userInfo.attributes['email'],
-            upn:
-              userInfo.attributes == undefined
-                ? JSON.parse(userInfo['identities'])[0].userId
-                : JSON.parse(userInfo.attributes['identities'])[0].userId,
-            chatUserId:
-              userInfo.attributes == undefined
-                ? userInfo['custom:ldsobjectGUID']
-                : userInfo.attributes['custom:ldsobjectGUID'],
-            photoUrl: 'images/person_48.png',
-            identityId: credential.identityId
-          });
-          if (shouldRedirectToHome) {
-            if (this.$q.platform.is.electron) {
-              this.$router.push({ name: 'home' });
-            } else {
-              this.$router.go('/');
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          if (this.$q.platform.is.electron) {
-            const vuex = JSON.parse(this.$q.localStorage.getItem('vuex'));
-            this.$q.electron.ipcRenderer.invoke(IPC_MESSAGES.STORE_USER, vuex.global.user);
-          }
-          Loading.hide();
-        });
+        // Loading.hide();
+      // Auth.currentAuthenticatedUser({ bypassCache: true })
+      //   .then(async (userInfo) => {
+      //     console.info('UserINFO :::::::',userInfo);
+      //     // let credential = await Auth.currentCredentials();
+      //     console.info('CREDENTIAL :::::::',credential);
+      //     this.$store.commit('global/setUser', {
+      //       isSignedIn: true,
+      //       lastSignedInState: eventType,
+      //       id: userInfo.attributes == undefined ? userInfo['username'] : userInfo.username,
+      //       firstName: userInfo.attributes == undefined ? userInfo['given_name'] : userInfo.attributes['given_name'],
+      //       lastName: userInfo.attributes == undefined ? userInfo['family_name'] : userInfo.attributes['family_name'],
+      //       name: userInfo.attributes == undefined ? userInfo['name'] : userInfo.attributes['name'],
+      //       email: userInfo.attributes == undefined ? userInfo['email'] : userInfo.attributes['email'],
+      //       upn:
+      //         userInfo.attributes == undefined
+      //           ? JSON.parse(userInfo['identities'])[0].userId
+      //           : JSON.parse(userInfo.attributes['identities'])[0].userId,
+      //       chatUserId:
+      //         userInfo.attributes == undefined
+      //           ? userInfo['custom:ldsobjectGUID']
+      //           : userInfo.attributes['custom:ldsobjectGUID'],
+      //       photoUrl: 'images/person_48.png',
+      //       // identityId: credential.identityId
+      //     });
+      //     if (shouldRedirectToHome) {
+      //       if (this.$q.platform.is.electron) {
+      //         this.$router.push({ name: 'home' });
+      //       } else {
+      //         this.$router.go('/');
+      //       }
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   })
+      //   .finally(() => {
+      //     if (this.$q.platform.is.electron) {
+      //       const vuex = JSON.parse(this.$q.localStorage.getItem('vuex'));
+      //       this.$q.electron.ipcRenderer.invoke(IPC_MESSAGES.STORE_USER, vuex.global.user);
+      //     }
+      //     Loading.hide();
+      //   });
     },
 
     signOut() {
-      Loading.show({
-        message: 'I\'m signing you out.<br/><span class="text-orange text-weight-bold">Hang on...</span>'
-      });
+      // Loading.show({
+      //   message: 'I\'m signing you out.<br/><span class="text-orange text-weight-bold">Hang on...</span>'
+      // });
       Auth.signOut({ global: true });
       this.$q.localStorage.clear();
       if (this.$q.platform.is.electron) {
@@ -257,7 +258,7 @@ export default {
         chatUserId: '',
         photoUrl: 'images/person_48.png'
       });
-      Loading.hide();
+      // Loading.hide();
       if (shouldRedirectToSignIn) {
         if (this.$q.platform.is.electron) {
           this.$router.push({ name: 'signin' });

@@ -61,17 +61,32 @@ export default {
         email: userInfo.email
       };
 
-      const credentials = await Auth.federatedSignIn(
-        'cognito-idpap-south-1.amazonaws.com/ap-south-1_xBYbkJ2iV',
-        tokenData,
-        userInfo
-      );
-      console.log('Electron sign :', credentials);
+      // const credentials = await Auth.federatedSignIn(
+      //   'cognito-idpap-south-1.amazonaws.com/ap-south-1_xBYbkJ2iV',
+      //   tokenData,
+      //   userInfo
+      // );
+      // console.log('Electron sign :', credentials);
+
+      this.$store.commit('global/setUser', {
+            isSignedIn: true,
+            lastSignedInState: 'signIn',
+            id: userInfo.username,
+            firstName: userInfo['given_name'],
+            lastName: userInfo['family_name'],
+            name:userInfo['name'],
+            email: userInfo['email'],
+            upn:userInfo['custom:upn'],
+            chatUserId:userInfo['custom:upn'],
+            photoUrl: 'images/person_48.png',
+            identityId: userInfo.sub
+          });
+      this.$router.push({ name: 'home' });
     },
     async signIn() {
-      Loading.show({
-        message: 'I\'m signing you in.<br/><span class="text-orange text-weight-bold">Hang on...</span>'
-      });
+      // Loading.show({
+      //   message: 'I\'m signing you in.<br/><span class="text-orange text-weight-bold">Hang on...</span>'
+      // });
       if (this.$q.platform.is.electron) {
         await this.signInElectron();
       } else if (this.$q.platform.is.android) {
@@ -118,7 +133,7 @@ export default {
 
         authWindow.on('closed', () => {
           // TODO: Handle this smoothly
-          Loading.hide();
+          // Loading.hide();
           throw new Error('Auth window was closed by user');
         });
 
