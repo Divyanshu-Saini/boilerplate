@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import { LocalStorage, Platform } from 'quasar';
 
 export default {
     name: 'FeedbackForm',
@@ -71,7 +70,7 @@ export default {
             var feedbackData = {};
             feedbackData.area = this.areaModel;
             feedbackData.description = this.description;
-            feedbackData.version = LocalStorage.getItem('appVersion');
+            feedbackData.version = this.$q.localStorage.getItem('appVersion');
             feedbackData.userName = this.$store.state.global.user.name;
             feedbackData.currDateTime = new Date();
             console.log("Feedback Submitted!!!! :", feedbackData);
