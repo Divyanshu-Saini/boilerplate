@@ -1,6 +1,60 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateCoWINRequest = /* GraphQL */ `
+  subscription OnCreateCoWINRequest {
+    onCreateCoWINRequest {
+      id
+      userId
+      sessionId
+      pinCode
+      isNotificationRequired
+      notificationsDisabled
+      notificationsDisabledAt
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateCoWINRequest = /* GraphQL */ `
+  subscription OnUpdateCoWINRequest {
+    onUpdateCoWINRequest {
+      id
+      userId
+      sessionId
+      pinCode
+      isNotificationRequired
+      notificationsDisabled
+      notificationsDisabledAt
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteCoWINRequest = /* GraphQL */ `
+  subscription OnDeleteCoWINRequest {
+    onDeleteCoWINRequest {
+      id
+      userId
+      sessionId
+      pinCode
+      isNotificationRequired
+      notificationsDisabled
+      notificationsDisabledAt
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const onCreateChannel = /* GraphQL */ `
   subscription OnCreateChannel {
     onCreateChannel {

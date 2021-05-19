@@ -1,6 +1,82 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const getCoWINRequest = /* GraphQL */ `
+  query GetCoWINRequest($id: ID!) {
+    getCoWINRequest(id: $id) {
+      id
+      userId
+      sessionId
+      pinCode
+      isNotificationRequired
+      notificationsDisabled
+      notificationsDisabledAt
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const listCoWINRequests = /* GraphQL */ `
+  query ListCoWINRequests(
+    $filter: ModelCoWINRequestFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCoWINRequests(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userId
+        sessionId
+        pinCode
+        isNotificationRequired
+        notificationsDisabled
+        notificationsDisabledAt
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncCoWINRequests = /* GraphQL */ `
+  query SyncCoWINRequests(
+    $filter: ModelCoWINRequestFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncCoWINRequests(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        userId
+        sessionId
+        pinCode
+        isNotificationRequired
+        notificationsDisabled
+        notificationsDisabledAt
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getChannel = /* GraphQL */ `
   query GetChannel($id: ID!) {
     getChannel(id: $id) {

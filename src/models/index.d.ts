@@ -1,8 +1,18 @@
 import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
-
-
-
+export declare class CoWINRequest {
+  readonly id: string;
+  readonly userId: string;
+  readonly sessionId: string;
+  readonly pinCode: string;
+  readonly isNotificationRequired: boolean;
+  readonly notificationsDisabled?: boolean;
+  readonly notificationsDisabledAt?: string;
+  readonly createdAt: string;
+  readonly updatedAt: string;
+  constructor(init: ModelInit<CoWINRequest>);
+  static copyOf(source: CoWINRequest, mutator: (draft: MutableModel<CoWINRequest>) => MutableModel<CoWINRequest> | void): CoWINRequest;
+}
 
 export declare class Channel {
   readonly id: string;

@@ -131,6 +131,7 @@ export default {
   },
   methods: {
     ...mapActions('notification', ['setNotification', 'pushNotification']),
+
     showNotif(position, message) {
       this.$q.notify({
         message,
@@ -147,6 +148,7 @@ export default {
         timeout: Math.random() * 5000 + 3000
       });
     },
+
     personalise() {
       const message = {
         type: 'human',
@@ -154,6 +156,7 @@ export default {
       };
       this.$store.dispatch('postTextMessage', message);
     },
+
     handleAuthEvents(data) {
       switch (data.payload.event) {
         case 'signIn':
@@ -187,12 +190,14 @@ export default {
           break;
       }
     },
+
     async signIn() {
       Loading.show({
         message: 'I\'m signing you in.<br/><span class="text-orange text-weight-bold">Hang on...</span>'
       });
       Auth.federatedSignIn();
     },
+
     fillUserInfo(eventType, shouldRedirectToHome) {
       Auth.currentAuthenticatedUser({ bypassCache: true })
         .then(async (userInfo) => {
@@ -235,6 +240,7 @@ export default {
           Loading.hide();
         });
     },
+
     signOut() {
       Loading.show({
         message: 'I\'m signing you out.<br/><span class="text-orange text-weight-bold">Hang on...</span>'
@@ -245,6 +251,7 @@ export default {
         this.$q.electron.ipcRenderer.send(IPC_MESSAGES.CLEAR_STORAGE);
       }
     },
+
     clearUserInfo(eventType, shouldRedirectToSignIn) {
       this.$store.commit('global/setUser', {
         isSignedIn: false,
@@ -267,6 +274,7 @@ export default {
         }
       }
     },
+
     subscribeToNotifications() {
       this.notificationUSubscription = API.graphql(graphqlOperation(subscriptions.onUpdateNotifications)).subscribe({
         next: ({ provider, value }) => {
@@ -291,6 +299,7 @@ export default {
         error: (error) => console.warn(error)
       });
     },
+    
     subscribeToPersonalise() {
       this.personaliseUSubscription = API.graphql(graphqlOperation(subscriptions.onUpdatePersonalize)).subscribe({
         next: ({ provider, value }) => {

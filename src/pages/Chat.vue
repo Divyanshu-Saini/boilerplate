@@ -64,7 +64,8 @@ const pollyClient = new Polly(awsConfig);
 let sessionObject = JSON.parse(LocalStorage.getItem('vuex'));
 const sessionAttributes = {
   chatUserId: sessionObject.global.user.chatUserId,
-  upn: sessionObject.global.user.upn
+  upn: sessionObject.global.user.upn,
+  email:sessionObject.global.user.email
 };
 
 const config = {
