@@ -62,7 +62,7 @@ export default {
       };
 
       // const credentials = await Auth.federatedSignIn(
-      //   'cognito-idpap-south-1.amazonaws.com/ap-south-1_xBYbkJ2iV',
+      //   'cognito-idp.ap-south-1.amazonaws.com/ap-south-1_xBYbkJ2iV',
       //   tokenData,
       //   userInfo
       // );
