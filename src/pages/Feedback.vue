@@ -81,9 +81,19 @@ export default {
               message: 'Your feedback is submitted. Thanks!'
             })
 
+           const body = `<html>
+              <body>
+              <h4>Hi Team,</h4>
+              <p>I have received a feedback from ${this.$store.state.global.user.name}, below is the detail.</p>
+              <p><b>Area: </b> ${this.areaModel.label}</p>
+              <p><b>Description: </b> ${this.description}</p>
+              <p>Thanks,<br>-Jack</br></p>
+              </body>
+              </html>`;
+              
             let param = {
-                body: this.description,
-                subject: "Feedback for "+this.areaModel.label
+                body: body,
+                subject: "ForBetter Feedback"
             }
             const requestOptions = {
                 method: 'POST',
