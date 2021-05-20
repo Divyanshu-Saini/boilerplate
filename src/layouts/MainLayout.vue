@@ -17,7 +17,7 @@
         </q-list>
         <q-list style="height: calc(100% - 50px); margin-top: 260px;">
           <q-btn flat dense round icon="power_settings_new" aria-label="power_settings_new" color="accent" @click="signOut()" />
-          <label>Version: {{appVersion}}</label>
+          <label>App : {{appVersion}} | Backend  :{{backendVersion}}</label>  
         </q-list>
       </q-scroll-area>
       <q-list class="absolute-top" style="border-bottom: 1px solid #ddd">
@@ -112,10 +112,14 @@ export default {
       notificationCSubscription:undefined,
       personaliseCSubscription:undefined,
       personaliseUSubscription:undefined,
-      appVersion:version
+      appVersion:version,
+      backendVersion:''
     };
   },
   created() {
+    this.$axios.get('https://tcplsmtp.azurewebsites.net/mail').then((res)=>{
+      this.$data.backendVersion= res.data;
+    });
     console.log(this.$store.state.global.bot.avatarUrl);
     console.log(this.$store.state.global.user.photoUrl);
     this.resetNotification();
