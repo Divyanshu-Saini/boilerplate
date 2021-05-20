@@ -32,11 +32,14 @@
 <script>
 import { Auth, Hub, Amplify } from 'aws-amplify';
 import { Loading, Platform } from 'quasar';
+import { mapActions } from "vuex";
 import { IPC_MESSAGES } from 'app/constant';
 
 export default {
   name: 'SignIn',
   methods: {
+      ...mapActions('notification', ['setNotification', 'pushNotification','resetNotification']),
+
     async signInSPA() {
       Auth.federatedSignIn();
     },
@@ -81,6 +84,9 @@ export default {
             photoUrl: 'images/person_48.png',
             identityId: userInfo.sub
           });
+      this.resetNotification();
+      this.setNotification(userInfo['email'])
+
       this.$router.push({ name: 'home' });
     },
     async signIn() {

@@ -1,6 +1,7 @@
 import {Auth} from 'aws-amplify';
 import { LocalStorage, Platform } from 'quasar';
 
+
 const routes = [
   {
     path: '/',
@@ -8,7 +9,7 @@ const routes = [
     children: [
       { path: '', name: 'home', redirect: 'chat' },
       { path: 'chat', name: 'chat', component: () => import('pages/Chat.vue') , beforeEnter:sessionResolver},
-      { path: 'notifications', name: 'notifications', component: () => import('pages/Notifications.vue') },
+      { path: 'notifications', name: 'notifications', component: () => import('pages/Notifications.vue')},
       { path: 'settings', name: 'settings', component: () => import('pages/Settings.vue') },
       { path: 'signin', name: 'signin', component: () => import('pages/SignIn.vue') },
       { path: 'feedback', name: 'feedback', component: () => import('pages/Feedback.vue') }

@@ -30,7 +30,7 @@
     "lodash": "^4.17.21",
     "material-design-icons": "^3.0.1",
     "moment": "^2.29.1",
-    "nds-aws-lex-web-ui": "^1.0.1",
+    "nds-aws-lex-web-ui": "^1.0.2",
     "nodemailer": "^2.7.2",
     "quasar": "^1.0.0",
     "roboto-fontface": "^0.10.0",

@@ -118,13 +118,14 @@ export default {
   created() {
     console.log(this.$store.state.global.bot.avatarUrl);
     console.log(this.$store.state.global.user.photoUrl);
-    this.setNotification();
+    this.resetNotification();
+    this.setNotification(this.$store.state.global.user.email);
     this.subscribeToNotifications();
     this.subscribeToPersonalise();
     Hub.listen('auth', this.handleAuthEvents);
   },
   methods: {
-    ...mapActions('notification', ['setNotification', 'pushNotification']),
+    ...mapActions('notification', ['setNotification', 'pushNotification','resetNotification']),
 
     showNotif(position, args={}) {
       const notifyArgs ={
