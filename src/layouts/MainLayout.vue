@@ -85,13 +85,13 @@ const linksData = [
     link: 'notifications',
     color: 'accent'
   },
-  {
-    title: 'Settings',
-    caption: 'Personalize my behaviour',
-    icon: 'settings',
-    link: 'settings',
-    color: 'secondary'
-  },
+  // {
+  //   title: 'Settings',
+  //   caption: 'Personalize my behaviour',
+  //   icon: 'settings',
+  //   link: 'settings',
+  //   color: 'secondary'
+  // },
   {
     title: 'Feedback',
     caption: 'Feel free to write your review',
