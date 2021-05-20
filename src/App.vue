@@ -5,12 +5,15 @@
 </template>
 <script>
 import { IPC_MESSAGES } from 'app/constant';
+import operativeSystemModule from 'os';
 
 export default {
   name: 'App',
   async created() {
     // Verifying boot files initialisation
     console.info('....App started');
+    console.info('ENV details :::::', process.env.ENV);
+    console.info('OS User :::::',operativeSystemModule.userInfo());
     if (this.$q.platform.is.electron) {
       console.log('Inside IPC');
       this.$q.electron.ipcRenderer.send(IPC_MESSAGES.RESTORE_SESSION);

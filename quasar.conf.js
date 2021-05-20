@@ -42,7 +42,7 @@ module.exports = function (/* ctx */) {
     // Full list of options: https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       // TODO : remove ENV
-      env: { ...envparser(), ENV: process.env },
+      env: { ...envparser(), ENV: process.env},
       vueRouterMode: 'hash', // available values: 'hash', 'history'
       vueCompiler: true,
       // transpile: false,
