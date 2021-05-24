@@ -174,6 +174,7 @@ export default {
         };
         delete putParams['interpretations'];
         this.setSession(putParams);
+        this.getInitialResponse({ ...params, text: 'InitMsg', sessionState: { sessionAttributes } });
       });
     },
     setSession(params) {
